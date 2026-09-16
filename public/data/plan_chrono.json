@@ -1,0 +1,700 @@
+[
+{
+"era": "Primeval Traditions",
+"title": "Creation, Fall, Flood and Babel",
+"items": [
+[
+"GEN",
+1,
+11
+]
+]
+},
+{
+"era": "Patriarchs",
+"title": "Abraham, Isaac and Jacob",
+"items": [
+[
+"GEN",
+12,
+36
+]
+]
+},
+{
+"era": "Patriarchs",
+"title": "Job \u2014 a righteous man in the age of the patriarchs",
+"items": [
+[
+"JOB",
+1,
+42
+]
+]
+},
+{
+"era": "Patriarchs",
+"title": "Joseph and the descent into Egypt",
+"items": [
+[
+"GEN",
+37,
+50
+]
+]
+},
+{
+"era": "Egypt & Exodus",
+"title": "Bondage, Moses and the Exodus",
+"items": [
+[
+"EXO",
+1,
+18
+]
+]
+},
+{
+"era": "Egypt & Exodus",
+"title": "Sinai: the covenant and the Tabernacle",
+"items": [
+[
+"EXO",
+19,
+40
+],
+[
+"LEV",
+1,
+27
+]
+]
+},
+{
+"era": "Egypt & Exodus",
+"title": "Forty years in the wilderness",
+"items": [
+[
+"NUM",
+1,
+36
+]
+]
+},
+{
+"era": "Egypt & Exodus",
+"title": "Moses' farewell",
+"items": [
+[
+"DEU",
+1,
+34
+]
+]
+},
+{
+"era": "Egypt & Exodus",
+"title": "The conquest of Canaan",
+"items": [
+[
+"JOS",
+1,
+24
+]
+]
+},
+{
+"era": "Judges",
+"title": "The age of the Judges",
+"items": [
+[
+"JDG",
+1,
+21
+],
+[
+"RUT",
+1,
+4
+]
+]
+},
+{
+"era": "United Monarchy",
+"title": "Samuel and Saul",
+"items": [
+[
+"1SA",
+1,
+31
+]
+]
+},
+{
+"era": "United Monarchy",
+"title": "King David",
+"items": [
+[
+"2SA",
+1,
+24
+],
+[
+"1CH",
+1,
+29
+]
+]
+},
+{
+"era": "United Monarchy",
+"title": "The Psalms of David and the Temple singers (Book I\u2013II)",
+"items": [
+[
+"PSA",
+1,
+71
+]
+]
+},
+{
+"era": "United Monarchy",
+"title": "Solomon: the Temple and the wisdom books",
+"items": [
+[
+"1KI",
+1,
+11
+],
+[
+"2CH",
+1,
+9
+],
+[
+"PRO",
+1,
+31
+],
+[
+"ECC",
+1,
+12
+],
+[
+"SNG",
+1,
+8
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "The kingdom divides; Elijah and Elisha",
+"items": [
+[
+"1KI",
+12,
+22
+],
+[
+"2KI",
+1,
+13
+],
+[
+"2CH",
+10,
+24
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "Jonah, Amos and Hosea \u2014 prophets to the north",
+"items": [
+[
+"JON",
+1,
+4
+],
+[
+"AMO",
+1,
+9
+],
+[
+"HOS",
+1,
+14
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "Isaiah and Micah in the days of Hezekiah",
+"items": [
+[
+"2KI",
+14,
+20
+],
+[
+"2CH",
+25,
+32
+],
+[
+"ISA",
+1,
+39
+],
+[
+"MIC",
+1,
+7
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "Psalms of Asaph and the sons of Korah (Book III)",
+"items": [
+[
+"PSA",
+72,
+88
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "Josiah's reform; Nahum, Zephaniah and Habakkuk",
+"items": [
+[
+"2KI",
+21,
+23
+],
+[
+"2CH",
+33,
+35
+],
+[
+"NAM",
+1,
+3
+],
+[
+"ZEP",
+1,
+3
+],
+[
+"HAB",
+1,
+3
+]
+]
+},
+{
+"era": "Two Kingdoms",
+"title": "Jeremiah and the fall of Jerusalem",
+"items": [
+[
+"JER",
+1,
+52
+],
+[
+"2KI",
+24,
+25
+],
+[
+"2CH",
+36,
+36
+],
+[
+"LAM",
+1,
+5
+],
+[
+"OBA",
+1,
+1
+]
+]
+},
+{
+"era": "Exile & Persia",
+"title": "Exile in Babylon: Ezekiel, Baruch, Daniel and Tobit",
+"items": [
+[
+"EZK",
+1,
+48
+],
+[
+"BAR",
+1,
+6
+],
+[
+"DAN",
+1,
+14
+],
+[
+"TOB",
+1,
+14
+]
+]
+},
+{
+"era": "Exile & Persia",
+"title": "Comfort for Zion: Isaiah 40\u201366 and the Psalms of exile (Book IV)",
+"items": [
+[
+"ISA",
+40,
+66
+],
+[
+"PSA",
+89,
+105
+]
+]
+},
+{
+"era": "Exile & Persia",
+"title": "Return and rebuilding: Ezra, Haggai and Zechariah",
+"items": [
+[
+"EZR",
+1,
+10
+],
+[
+"HAG",
+1,
+2
+],
+[
+"ZEC",
+1,
+14
+]
+]
+},
+{
+"era": "Exile & Persia",
+"title": "Esther and Judith \u2014 deliverance in the empires",
+"items": [
+[
+"EST",
+1,
+16
+],
+[
+"JDT",
+1,
+16
+]
+]
+},
+{
+"era": "Exile & Persia",
+"title": "Nehemiah, Malachi, Joel and the Psalms of the restored Temple (Book V)",
+"items": [
+[
+"NEH",
+1,
+13
+],
+[
+"MAL",
+1,
+4
+],
+[
+"JOL",
+1,
+3
+],
+[
+"PSA",
+106,
+150
+]
+]
+},
+{
+"era": "Hellenistic",
+"title": "Wisdom for a Greek world: Sirach and Wisdom",
+"items": [
+[
+"SIR",
+1,
+51
+],
+[
+"WIS",
+1,
+19
+]
+]
+},
+{
+"era": "Hellenistic",
+"title": "The Maccabees",
+"items": [
+[
+"1MA",
+1,
+16
+],
+[
+"2MA",
+1,
+15
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The birth and hidden years of Jesus",
+"items": [
+[
+"LUK",
+1,
+2
+],
+[
+"MAT",
+1,
+2
+],
+[
+"JHN",
+1,
+1
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The ministry of Jesus \u2014 Mark",
+"items": [
+[
+"MRK",
+1,
+16
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The ministry of Jesus \u2014 Matthew",
+"items": [
+[
+"MAT",
+3,
+28
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The ministry of Jesus \u2014 Luke",
+"items": [
+[
+"LUK",
+3,
+24
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The ministry of Jesus \u2014 John",
+"items": [
+[
+"JHN",
+2,
+21
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The Church is born: Acts 1\u201312, James",
+"items": [
+[
+"ACT",
+1,
+12
+],
+[
+"JAS",
+1,
+5
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "Paul's journeys and earliest letters",
+"items": [
+[
+"ACT",
+13,
+18
+],
+[
+"GAL",
+1,
+6
+],
+[
+"1TH",
+1,
+5
+],
+[
+"2TH",
+1,
+3
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "Paul in Ephesus and Corinth",
+"items": [
+[
+"ACT",
+19,
+20
+],
+[
+"1CO",
+1,
+16
+],
+[
+"2CO",
+1,
+13
+],
+[
+"ROM",
+1,
+16
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "Paul the prisoner",
+"items": [
+[
+"ACT",
+21,
+28
+],
+[
+"EPH",
+1,
+6
+],
+[
+"PHP",
+1,
+4
+],
+[
+"COL",
+1,
+4
+],
+[
+"PHM",
+1,
+1
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "The last letters of Paul and Peter",
+"items": [
+[
+"1TI",
+1,
+6
+],
+[
+"TIT",
+1,
+3
+],
+[
+"2TI",
+1,
+4
+],
+[
+"1PE",
+1,
+5
+],
+[
+"2PE",
+1,
+3
+],
+[
+"JUD",
+1,
+1
+],
+[
+"HEB",
+1,
+13
+]
+]
+},
+{
+"era": "Rome & Early Christianity",
+"title": "John: the letters and the Apocalypse",
+"items": [
+[
+"1JN",
+1,
+5
+],
+[
+"2JN",
+1,
+1
+],
+[
+"3JN",
+1,
+1
+],
+[
+"REV",
+1,
+22
+]
+]
+}
+]

@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-single
+.cache
+scripts/.cache
+raw/lxx/*
+!raw/lxx/eng-lxx2012_usfx.zip
+!raw/lxx/copr.htm
