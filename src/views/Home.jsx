@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { data, useProgress, useSettings, totalProgress, bookProgress, nextCanon, nextInPlan, chapterDone, goalStatus, useMemory, useNotes, activePlan, PLAN_NAMES, saintFor } from '../store';
+import { data, useProgress, useSettings, totalProgress, bookProgress, nextCanon, nextInPlan, chapterDone, goalStatus, useMemory, useNotes, activePlan, PLAN_NAMES, saintFor, stopFor } from '../store';
 import DailyFive from '../components/DailyFive';
 import { ReadingsList } from './Calendar';
 import { liturgicalDay } from '../lectionary';
@@ -24,7 +24,9 @@ function useJourney() {
   const streak = (() => { let n = 0; for (let i = cells.length - 1; i >= 0 && cells[i]; i--) n++; return n; })();
   const goal = goalStatus(p, s);
   const hero = target && data.timeline.events.find(e => e.art && e.refs.some(r => r.b === target.b && r.c1 <= target.c && target.c <= r.c2));
-  return { p, s, tot, ot, nt, target, last, cells, streak, goal, hero };
+  const stop = s.plan === 'story' && target ? stopFor(target.b, target.c) : null;
+  const readTo = target ? `/read/${target.b}/${target.c}${stop ? '?story=' + stop.n : ''}` : '/books';
+  return { p, s, tot, ot, nt, target, last, cells, streak, goal, hero, stop, readTo };
 }
 const Streak = ({ cells }) => <div className="streak">{cells.map((on, i) => <i key={i} className={on ? 'on' : ''} />)}</div>;
 
@@ -67,21 +69,21 @@ function WeekAhead({ today }) {
 
 // Continue reading: the next chapter under its painting, with the progress that got you here.
 function ContinueCard({ j }) {
-  const { s, tot, ot, nt, target, last, cells, streak, goal, hero } = j;
+  const { s, tot, ot, nt, target, last, cells, streak, goal, hero, stop, readTo } = j;
   const name = target ? `${data.byId[target.b].name.replace(/\s*\(.*\)/, '')} ${target.c}` : 'In principio';
   return (
     <div className="card cont">
-      <Link to={target ? `/read/${target.b}/${target.c}` : '/books'} className="cont-hero">
-        {hero && <ArtImg wp={hero.art.wp} alt="" />}
+      <Link to={readTo} className="cont-hero">
+        {(stop || hero) && <ArtImg wp={stop ? stop.art : hero.art.wp} alt="" />}
         <div className="in">
-          <div className="eyebrow">{target && last && last.b === target.b && last.c === target.c ? 'Pick up where you left off' : 'Next in your journey'}</div>
-          <div className="big">{name}</div>
-          <div className="sub">{hero ? hero.ttl : target ? data.byId[target.b].latin : 'Genesis 1'}</div>
+          <div className="eyebrow">{stop ? `The story · stop ${stop.n} of ${data.story.stops.length}` : target && last && last.b === target.b && last.c === target.c ? 'Pick up where you left off' : 'Next in your journey'}</div>
+          <div className="big">{stop ? stop.t : name}</div>
+          <div className="sub">{stop ? name : hero ? hero.ttl : target ? data.byId[target.b].latin : 'Genesis 1'}</div>
         </div>
       </Link>
       <div className="cont-body">
         <div className="row" style={{ gap: 8 }}>
-          {target && <Link className="btn solid sm" to={`/read/${target.b}/${target.c}`}>Continue reading</Link>}
+          {target && <Link className="btn solid sm" to={readTo}>Continue reading</Link>}
           <Link className="btn sm" to="/journey">{PLAN_NAMES[s.plan] || 'Canonical order'}</Link>
         </div>
         <div className="cont-stats">
@@ -99,6 +101,7 @@ function ContinueCard({ j }) {
 }
 
 const WAYS = [
+  ['/story', 'The story', () => `${data.story.stops.length} stops`, 'The whole Bible as one guided path, Genesis to the Apocalypse, read like a novel', 'M4 19V5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2zM8 7h8M8 11h6'],
   ['/books', 'The Bible', 'seventy-three books', 'Latin and English side by side, in eleven versions', 'M4 4h5a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-5a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h6z'],
   ['/explore', 'Timeline & map', '120 events', 'Four thousand years and the journeys of Abraham, Moses, Jesus and Paul', 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'],
   ['/people', 'People', () => `${data.people.length} lives`, 'Portraits, chapters, events and places for every major figure', 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 3.6-7 8-7s8 3 8 7'],
@@ -186,7 +189,7 @@ function DesktopHome() {
 
 // The phone's home: Today, then continue reading, then the ways in.
 function MobileHome() {
-  const j = useJourney(); const { p, s, tot, ot, nt, target, last, cells, streak, goal, hero } = j;
+  const j = useJourney(); const { p, s, tot, ot, nt, target, last, cells, streak, goal, hero, stop, readTo } = j;
   const today = new Date(); const day = liturgicalDay(today);
   const books = data.books;
   return (
@@ -204,12 +207,12 @@ function MobileHome() {
 
       <SaintCard date={today} compact />
 
-      <Link to={target ? `/read/${target.b}/${target.c}` : '/books'} className="mhero" style={{ marginTop: 12 }}>
-        {hero && <ArtImg wp={hero.art.wp} alt="" />}
+      <Link to={readTo} className="mhero" style={{ marginTop: 12 }}>
+        {(stop || hero) && <ArtImg wp={stop ? stop.art : hero.art.wp} alt="" />}
         <div className="in">
-          <div className="eyebrow">{target && last && last.b === target.b && last.c === target.c ? 'Pick up where you left off' : 'Next in your journey'}</div>
-          <div className="big">{target ? `${data.byId[target.b].name.replace(/\s*\(.*\)/, '')} ${target.c}` : 'In principio'}</div>
-          <div className="muted">{hero ? hero.ttl : (target ? data.byId[target.b].latin : 'Genesis 1')} · tap to read</div>
+          <div className="eyebrow">{stop ? `The story · stop ${stop.n}` : target && last && last.b === target.b && last.c === target.c ? 'Pick up where you left off' : 'Next in your journey'}</div>
+          <div className="big">{stop ? stop.t : target ? `${data.byId[target.b].name.replace(/\s*\(.*\)/, '')} ${target.c}` : 'In principio'}</div>
+          <div className="muted">{stop ? `${data.byId[target.b].name.replace(/\s*\(.*\)/, '')} ${target.c}` : hero ? hero.ttl : (target ? data.byId[target.b].latin : 'Genesis 1')} · tap to read</div>
         </div>
       </Link>
       <div className="mstats">

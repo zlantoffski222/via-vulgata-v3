@@ -7,7 +7,7 @@ const LS = {
 };
 
 /* ---------- static data ---------- */
-export const data = { books: null, byId: {}, timeline: null, context: null, plan: null, notes: [], notesByChapter: {}, versions: [], people: [], journeys: [], harmony: null, prophecy: [], lectionary: null, saints: [], prayers: null, ready: false };
+export const data = { story: { parts: [], stops: [] }, storyByChapter: {}, books: null, byId: {}, timeline: null, context: null, plan: null, notes: [], notesByChapter: {}, versions: [], people: [], journeys: [], harmony: null, prophecy: [], lectionary: null, saints: [], prayers: null, ready: false };
 // Single-file builds embed every data file in window.__VV__ keyed by path; otherwise fetch from /data.
 const EMBED = typeof window !== 'undefined' ? window.__VV__ : null;
 const EMBEDZ = typeof window !== 'undefined' ? window.__VVZ__ : null;
@@ -37,11 +37,13 @@ export function loadData() {
       getJson('/data/lectionary.json').catch(() => null),
       getJson('/data/saints.json').catch(() => []),
       getJson('/data/prayers.json').catch(() => null),
-    ]).then(([books, timeline, context, plan, notesNT, versions, notesOT, people, journeys, harmony, prophecy, lectionary, saints, prayers]) => {
+      getJson('/data/story.json').catch(() => ({ parts: [], stops: [] })),
+    ]).then(([books, timeline, context, plan, notesNT, versions, notesOT, people, journeys, harmony, prophecy, lectionary, saints, prayers, story]) => {
       data.versions = versions.versions || [];
       data.books = books; data.byId = Object.fromEntries(books.map(b => [b.id, b]));
       data.timeline = timeline; data.context = context; data.plan = plan; data.ready = true;
-      data.people = people.people || []; data.journeys = journeys.journeys || []; data.harmony = harmony; data.prophecy = prophecy.items || []; data.lectionary = lectionary; data.saints = saints; data.prayers = prayers;
+      data.people = people.people || []; data.journeys = journeys.journeys || []; data.harmony = harmony; data.prophecy = prophecy.items || []; data.lectionary = lectionary; data.saints = saints; data.prayers = prayers; data.story = story;
+      const sbc = {}; for (const st of story.stops) for (const [b, c1, c2] of st.r) for (let c = c1; c <= c2; c++) if (!sbc[b + ':' + c]) sbc[b + ':' + c] = st; data.storyByChapter = sbc;
       // index events by book/chapter
       const byChapter = {};
       for (const ev of timeline.events) for (const r of ev.refs) for (let c = r.c1; c <= r.c2; c++) {
@@ -258,8 +260,16 @@ export function christPlan() {
   }
   return (christPlanCache = steps);
 }
-export function activePlan(s) { return s.plan === 'chrono' ? data.plan : s.plan === 'christ' ? christPlan() : null; }
-export const PLAN_NAMES = { canon: 'Canonical order', chrono: 'Story order', christ: 'The life of Christ' };
+// The story: the guided walkthrough as a plan (each stop a step)
+let storyPlanCache = null;
+export function storyPlan() { if (!storyPlanCache && data.story.stops.length) storyPlanCache = data.story.stops.map(st => ({ era: data.story.parts[st.part].t, title: st.t, items: st.r.map(x => [...x]), stop: st.n })); return storyPlanCache; }
+export function activePlan(s) { return s.plan === 'chrono' ? data.plan : s.plan === 'christ' ? christPlan() : s.plan === 'story' ? storyPlan() : null; }
+export const PLAN_NAMES = { canon: 'Canonical order', chrono: 'Story order', christ: 'The life of Christ', story: 'The story' };
+// story helpers
+export const stopChapters = st => st.r.flatMap(([b, c1, c2]) => Array.from({ length: c2 - c1 + 1 }, (_, k) => ({ b, c: c1 + k })));
+export function stopStatus(p, st) { const chs = stopChapters(st); const done = chs.filter(x => chapterDone(p, data.byId[x.b], x.c)).length; return { done, total: chs.length, complete: done === chs.length, next: chs.find(x => !chapterDone(p, data.byId[x.b], x.c)) || null }; }
+export function nextStop(p) { for (const st of data.story.stops) if (!stopStatus(p, st).complete) return st; return null; }
+export function stopFor(b, c) { return data.storyByChapter[b + ':' + c] || null; }
 export function nextInPlan(plan, p) {
   const list = chronoChapters(plan);
   for (const x of list) { const book = data.byId[x.b]; if (!chapterDone(p, book, x.c)) return x; }

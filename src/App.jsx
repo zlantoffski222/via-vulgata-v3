@@ -21,6 +21,7 @@ import Explore from './views/Explore';
 import Saints, { Saint } from './views/Saints';
 import Diagrams, { Diagram } from './views/Diagrams';
 import Quiz from './views/Quiz';
+import Story, { Stop } from './views/Story';
 import Prayer, { Rosary, Stations, Mercy, Lectio } from './views/Prayer';
 import QuickSearch from './components/QuickSearch';
 import ListenBar from './components/ListenBar';
@@ -73,13 +74,13 @@ export default function App() {
         <NavLink to="/books" className={() => on(['/books', '/read', '/book']) ? 'on' : ''}>{I.books}<span>Bible</span></NavLink>
         {mobile ? <>
           <NavLink to="/calendar" className={({ isActive }) => isActive ? 'on' : ''}>{I.today}<span>Today</span></NavLink>
-          <NavLink to="/study" className={() => on(['/study', '/people', '/harmony', '/prophecy', '/notebook', '/memory', '/timeline', '/event', '/explore', '/journey', '/saints', '/prayer', '/diagrams', '/quiz']) ? 'on' : ''}>{I.study}<span>Study</span></NavLink>
+          <NavLink to="/study" className={() => on(['/study', '/people', '/harmony', '/prophecy', '/notebook', '/memory', '/timeline', '/event', '/explore', '/journey', '/saints', '/prayer', '/diagrams', '/quiz', '/story']) ? 'on' : ''}>{I.study}<span>Study</span></NavLink>
         </> : <>
           <NavLink to="/journey" className={({ isActive }) => isActive ? 'on' : ''}>{I.journey}<span>Journey</span></NavLink>
           <NavLink to="/calendar" className={({ isActive }) => isActive ? 'on' : ''}>{I.today}<span>Today</span></NavLink>
           <NavLink to="/explore" className={() => on(['/explore', '/timeline', '/event']) ? 'on' : ''}>{I.map}<span>Explore</span></NavLink>
           <NavLink to="/people" className={({ isActive }) => isActive ? 'on' : ''}>{I.people}<span>People</span></NavLink>
-          <NavLink to="/study" className={() => on(['/study', '/harmony', '/prophecy', '/saints', '/prayer', '/diagrams', '/quiz']) ? 'on' : ''}>{I.study}<span>Study</span></NavLink>
+          <NavLink to="/study" className={() => on(['/study', '/harmony', '/prophecy', '/saints', '/prayer', '/diagrams', '/quiz', '/story']) ? 'on' : ''}>{I.study}<span>Study</span></NavLink>
           <NavLink to="/notebook" className={({ isActive }) => isActive ? 'on' : ''}>{I.note}<span>Notes</span></NavLink>
           <NavLink to="/memory" className={({ isActive }) => isActive ? 'on' : ''}>{I.star}<span>Memory</span></NavLink>
           <button className="navbtn" onClick={() => setSearch(true)} title="Search (/)">{I.search}<span>Search</span></button>
@@ -110,6 +111,8 @@ export default function App() {
           <Route path="/diagrams" element={<Diagrams />} />
           <Route path="/diagrams/:id" element={<Diagram />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/story" element={<Story />} />
+          <Route path="/story/:n" element={<Stop />} />
           <Route path="/prayer" element={<Prayer />} />
           <Route path="/prayer/rosary" element={<Rosary />} />
           <Route path="/prayer/stations" element={<Stations />} />

@@ -12,12 +12,13 @@ Version 3. Read the Latin Vulgate with the Douay-Rheims beside it — or any of 
 
 ## What is in it
 
+- **The story.** The whole Bible as one guided path of 92 stops, Genesis to the Apocalypse — each stop a few chapters with its painting, its place on the map, its diagram, the people in it, and two short notes: where we are, and what to watch for. Read it like a novel; the reader keeps the thread from chapter to chapter and hands you on to the next stop. Written in `scripts/story/`.
 - **Eleven versions.** Clementine Vulgate (Latin), Douay-Rheims, Catholic Public Domain Version, Berean Standard Bible, King James (with Apocrypha), World English Bible, JPS 1917, Brenton's Septuagint, Reina-Valera 1909 (Spanish), the SBL Greek New Testament and the Westminster Leningrad Codex (Hebrew). Every version is laid on the Vulgate's chapter-and-verse grid so that any verse can be compared across all of them.
 - **Greek and Hebrew with Strong's.** Turn on the original language under any chapter; tap a word for its lemma, meaning, and every other place it appears.
 - **Today.** The liturgical day and colour, the Mass readings, five passages chosen for the date, the saint of the day with a short life (366 of them), and fasting and abstinence under the current Catholic law, the traditional (1962) discipline, or the Orthodox rule.
 - **Prayer.** Twenty common prayers in Latin and English, the Rosary with the Gospel of each mystery, the Stations of the Cross, the Divine Mercy Chaplet, and a timed *lectio divina* with the day's Gospel.
 - **Diagrams.** The Tabernacle, the Ark, Solomon's and Herod's Temples, Jerusalem in the time of Jesus, the land of the twelve tribes, the two kingdoms, Noah's Ark, the High Priest's vestments and the week of creation — drawn to the text, every part tappable, and shown beside the chapters they belong to.
-- **Study.** Timeline and map, 56 people, the harmony of the Gospels, prophecy and fulfilment, cross-references, a Latin dictionary, memory verses with spaced repetition, a notebook, quizzes generated from the data, three reading plans (canonical, story order, the life of Christ) that can be shared as a link, and a print/PDF button for any chapter.
+- **Study.** Timeline and map, 56 people, the harmony of the Gospels, prophecy and fulfilment, cross-references, a Latin dictionary, memory verses with spaced repetition, a notebook, quizzes generated from the data, four reading plans (canonical, story order, the life of Christ, the story) that can be shared as a link, and a print/PDF button for any chapter.
 - **Phone layout.** A separate layout for phones, installable as an app.
 
 ## Deploy

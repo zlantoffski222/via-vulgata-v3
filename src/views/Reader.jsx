@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { data, useText, useProgress, useSettings, settingsStore, readSet, toggleVerse, setChapter, setLast, nextChapter, prevChapter, chapterDone, useVersionText, versionHasBook, useSide, useNotes, vkey } from '../store';
+import { data, useText, useProgress, useSettings, settingsStore, readSet, toggleVerse, setChapter, setLast, nextChapter, prevChapter, chapterDone, useVersionText, versionHasBook, useSide, useNotes, vkey, stopChapters } from '../store';
 import CompareVerse from '../components/CompareVerse';
 import { eventsForChapter, anchorVerse, isPrimaryChapter, eraFor } from '../util';
 import ContextPanel from '../components/ContextPanel';
@@ -70,11 +70,17 @@ export default function Reader() {
     else window.scrollTo(0, 0);
   }, [la, en, loc.hash, id, c]);
   // keyboard: ← → chapters, m mark chapter, l listen, o options
-  const nx = book ? nextChapter(data.books, id, c) : null, pv = book ? prevChapter(data.books, id, c) : null;
+  // reading inside the story: ?story=n keeps the chapter sequence of that stop
+  const storyN = +(new URLSearchParams(loc.search).get('story') || 0); const stop = storyN ? data.story.stops[storyN - 1] : null;
+  const stopChs = stop ? stopChapters(stop) : null; const stopIdx = stopChs ? stopChs.findIndex(x => x.b === id && x.c === c) : -1;
+  const nextStopObj = stop ? data.story.stops[stop.n] : null;
+  const nx = stop && stopIdx >= 0 ? (stopChs[stopIdx + 1] ? { ...stopChs[stopIdx + 1], story: stop.n } : (nextStopObj ? { toStop: nextStopObj } : null)) : book ? nextChapter(data.books, id, c) : null;
+  const pv = stop && stopIdx > 0 ? { ...stopChs[stopIdx - 1], story: stop.n } : book ? prevChapter(data.books, id, c) : null;
+  const go = t => { if (!t) return; if (t.toStop) nav(`/story/${t.toStop.n}`); else nav(`/read/${t.b}/${t.c}${t.story ? '?story=' + t.story : ''}`); };
   useEffect(() => {
     const k = e => {
       if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return; if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key === 'ArrowRight' && nx) nav(`/read/${nx.b}/${nx.c}`); else if (e.key === 'ArrowLeft' && pv) nav(`/read/${pv.b}/${pv.c}`);
+      if (e.key === 'ArrowRight' && nx) go(nx); else if (e.key === 'ArrowLeft' && pv) go(pv);
       else if (e.key === 'm' && book) { const done = chapterDone(progressNow(), book, c); setChapter(id, c, book.chapters[c - 1], !done); }
       else if (e.key === 'l') listen(); else if (e.key === 'o') setOpts(o => !o); else if (e.key === 'c') setDrawer(d => !d);
     };
@@ -120,7 +126,7 @@ export default function Reader() {
     <div className={'reader' + (mobile ? ' m' : '')}>
       <div>
         <div className="readbar">
-          {!mobile && <button className="ib" onClick={() => pv && nav(`/read/${pv.b}/${pv.c}`)} disabled={!pv} aria-label="Previous chapter">{Ico.prev}</button>}
+          {!mobile && <button className="ib" onClick={() => go(pv)} disabled={!pv} aria-label="Previous chapter">{Ico.prev}</button>}
           {mobile && <Link className="ib" to={`/book/${id}`} aria-label="Chapters">{Ico.prev}</Link>}
           <Link className="where" to={`/book/${id}`}><div className="bk">{book.name.replace(/\s*\(.*\)/, '')} {c}</div><div className="ch">{mobile ? `${read.size}/${nVerses} read` : `Ch. ${c} of ${book.chapters.length} · ${read.size}/${nVerses} read`}</div></Link>
           {!mobile && whereChip}
@@ -133,7 +139,7 @@ export default function Reader() {
           {speechSupported && !mobile && <button className={'ib' + (reading ? ' on' : '')} onClick={() => reading ? stopSpeech() : listen()} aria-label={reading ? 'Stop reading aloud' : 'Read aloud'} title="Read aloud (L)">{reading ? Ico.stop : Ico.play}</button>}
           <button className="ib" onClick={() => setOpts(true)} aria-label="Reading options" title="Reading options (O)">{Ico.aa}</button>
           {!mobile && <button className={'ib ctxbtn' + (drawer ? ' on' : '')} onClick={() => setDrawer(d => !d)} aria-label="Context and questions">{Ico.ctx}</button>}
-          {!mobile && <button className="ib" onClick={() => nx && nav(`/read/${nx.b}/${nx.c}`)} disabled={!nx} aria-label="Next chapter">{Ico.next}</button>}
+          {!mobile && <button className="ib" onClick={() => go(nx)} disabled={!nx} aria-label="Next chapter">{Ico.next}</button>}
         </div>
 
         <article className="folio" key={id + c}>
@@ -141,6 +147,7 @@ export default function Reader() {
             <ArtImg wp={plateEv.art.wp} alt={plateEv.art.t} />
             <div className="cap"><b>{plateEv.art.t}</b><span>{plateEv.art.by}{plateEv.art.by ? ' · ' : ''}{plateEv.ttl}</span></div>
           </Link>}
+          {stop && <Link to={`/story/${stop.n}`} className="story-bar"><span className="eyebrow">The story · stop {stop.n} of {data.story.stops.length}</span><b>{stop.t}</b><span className="muted small">{stopIdx >= 0 ? `chapter ${stopIdx + 1} of ${stopChs.length}` : ''}</span></Link>}
           <header className="folio-head">
             <div className="bk">{book.latin}</div>
             <div className="num">{c}</div>
@@ -193,9 +200,9 @@ export default function Reader() {
             </div>
           )}
           <footer className="folio-foot">
-            <button className="btn" onClick={() => pv && nav(`/read/${pv.b}/${pv.c}`)} disabled={!pv}>← {pv ? `${data.byId[pv.b].abbr} ${pv.c}` : ''}</button>
+            <button className="btn" onClick={() => go(pv)} disabled={!pv}>← {pv ? `${data.byId[pv.b].abbr} ${pv.c}` : ''}</button>
             <button className={'btn' + (done ? '' : ' solid')} onClick={() => setChapter(id, c, nVerses, !done)}>{done ? 'Unmark chapter' : 'Mark chapter read'}</button>
-            <button className="btn" onClick={() => { if (!done) setChapter(id, c, nVerses, true); if (nx) nav(`/read/${nx.b}/${nx.c}`); }} disabled={!nx}>{done ? 'Next' : 'Done, next'} {nx ? `${data.byId[nx.b].abbr} ${nx.c}` : ''} →</button>
+            <button className={'btn' + (nx && nx.toStop ? ' solid' : '')} onClick={() => { if (!done) setChapter(id, c, nVerses, true); go(nx); }} disabled={!nx}>{nx && nx.toStop ? `${done ? '' : 'Done · '}Next stop: ${nx.toStop.t}` : `${done ? 'Next' : 'Done, next'} ${nx ? `${data.byId[nx.b].abbr} ${nx.c}` : ''}`} →</button>
           </footer>
         </article>
       </div>
@@ -203,11 +210,11 @@ export default function Reader() {
       {drawer && <div className="drawer" onClick={() => setDrawer(false)}><aside className="panel" onClick={e => e.stopPropagation()}><div className="grab" />{panelInner}</aside></div>}
 
       {mobile && <div className="reader-tools" role="toolbar">
-        <button className="rt" onClick={() => pv && nav(`/read/${pv.b}/${pv.c}`)} disabled={!pv} aria-label="Previous chapter">{Ico.prev}<span>{pv ? `${data.byId[pv.b].abbr} ${pv.c}` : '—'}</span></button>
+        <button className="rt" onClick={() => go(pv)} disabled={!pv} aria-label="Previous chapter">{Ico.prev}<span>{pv ? `${data.byId[pv.b].abbr} ${pv.c}` : '—'}</span></button>
         <button className={'rt' + (done ? ' on' : '')} onClick={() => setChapter(id, c, nVerses, !done)} aria-label="Mark chapter read">{Ico.check}<span>{done ? 'Read ✓' : 'Mark read'}</span></button>
         <button className={'rt' + (drawer ? ' on' : '')} onClick={() => setDrawer(d => !d)} aria-label="Context and questions">{Ico.ctx}<span>Context</span></button>
         {speechSupported && <button className={'rt' + (reading ? ' on' : '')} onClick={() => reading ? stopSpeech() : listen()} aria-label="Read aloud">{reading ? Ico.stop : Ico.play}<span>{reading ? 'Stop' : 'Listen'}</span></button>}
-        <button className="rt" onClick={() => nx && nav(`/read/${nx.b}/${nx.c}`)} disabled={!nx} aria-label="Next chapter">{Ico.next}<span>{nx ? `${data.byId[nx.b].abbr} ${nx.c}` : '—'}</span></button>
+        <button className="rt" onClick={() => go(nx)} disabled={!nx} aria-label="Next chapter">{Ico.next}<span>{nx ? (nx.toStop ? 'Next stop' : `${data.byId[nx.b].abbr} ${nx.c}`) : '—'}</span></button>
       </div>}
 
       {sheetV != null && la && en && (() => { const v = typeof sheetV === 'object' ? sheetV.v : sheetV; return <VerseSheet key={v + ':' + (typeof sheetV === 'object' ? sheetV.tab : '')} open onClose={() => setSheet(null)} book={book} c={c} v={v} la={la[c - 1]?.[v - 1] || ''} en={en[c - 1]?.[v - 1] || ''} xrefs={xrefs && xrefs[c + ':' + v]} initialTab={typeof sheetV === 'object' ? sheetV.tab : 'act'} />; })()}

@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/unpack-data.js && node scripts/build-text.js && node scripts/build-versions.js && node scripts/build-versions2.js && node scripts/build-xrefs.js && node scripts/build-latin.js && node scripts/build-speakers.js && node scripts/make-icons.js",
+    "prebuild": "node scripts/unpack-data.js && node scripts/build-text.js && node scripts/build-versions.js && node scripts/build-versions2.js && node scripts/build-xrefs.js && node scripts/build-latin.js && node scripts/build-speakers.js && node scripts/build-story.js && node scripts/make-icons.js",
     "build": "vite build",
     "preview": "vite preview"
   },

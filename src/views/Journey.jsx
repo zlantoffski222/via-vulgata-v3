@@ -23,13 +23,14 @@ export default function Journey() {
           <button className={s.plan === 'canon' ? 'on' : ''} onClick={() => settingsStore.set({ plan: 'canon' })}>Canonical order</button>
           <button className={s.plan === 'chrono' ? 'on' : ''} onClick={() => settingsStore.set({ plan: 'chrono' })}>Story order</button>
           <button className={s.plan === 'christ' ? 'on' : ''} onClick={() => settingsStore.set({ plan: 'christ' })}>The life of Christ</button>
+          <button className={s.plan === 'story' ? 'on' : ''} onClick={() => settingsStore.set({ plan: 'story' })}>The story</button>
         </div>
         <ShareButton s={s} />
         {nxt && <Link className="btn solid" to={`/read/${nxt.b}/${nxt.c}`}>Next: {data.byId[nxt.b].name} {nxt.c}</Link>}
       </div>
       <GoalCard p={p} s={s} />
       <p className="muted" style={{ maxWidth: 680, lineHeight: 1.5 }}>
-        {s.plan === 'christ' ? 'The four Gospels read as one story, in the order of the harmony: the prologue of John, the infancy in Luke and Matthew, the Galilean year, the road south, Holy Week hour by hour, the forty days. Every chapter of the four Gospels, placed where its scenes fall in the story, each read once.' : s.plan === 'chrono'
+        {s.plan === 'story' ? 'The guided walkthrough: the whole Bible as one path of stops, each with its painting, map, diagram and notes. The chapters on the main path count here; open any stop from The story page.' : s.plan === 'christ' ? 'The four Gospels read as one story, in the order of the harmony: the prologue of John, the infancy in Luke and Matthew, the Galilean year, the road south, Holy Week hour by hour, the forty days. Every chapter of the four Gospels, placed where its scenes fall in the story, each read once.' : s.plan === 'chrono'
           ? 'Read the Bible as one continuous chronicle: Job among the patriarchs, the prophets beside the kings they preached to, the psalms in the age that sang them, and the four Gospels one after another.'
           : "Read in the order Jerome's Vulgate arranges the books — Law, histories, wisdom, prophets, Maccabees; then Gospels, Acts, letters and the Apocalypse. Either way, every verse counts once."}
       </p>
