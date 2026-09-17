@@ -2,7 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const BASE = process.env.BASE || '/';
 export default defineConfig({
+  base: BASE,
   plugins: [
     react(),
     VitePWA({
@@ -15,10 +17,10 @@ export default defineConfig({
         theme_color: '#f8f5ec',
         background_color: '#f8f5ec',
         display: 'standalone',
-        start_url: '/',
+        start_url: BASE, scope: BASE,
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
         ],
       },
       workbox: {
@@ -27,12 +29,12 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/data/'),
+            urlPattern: ({ url }) => url.pathname.includes('/data/'),
             handler: 'CacheFirst',
             options: { cacheName: 'bible-data', expiration: { maxEntries: 1200, maxAgeSeconds: 60 * 60 * 24 * 365 } },
           },
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/art/'),
+            urlPattern: ({ url }) => url.pathname.includes('/art/'),
             handler: 'CacheFirst',
             options: { cacheName: 'art', expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 365 } },
           },

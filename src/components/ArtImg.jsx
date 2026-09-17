@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { data } from '../store';
+import { data, withBase } from '../store';
 
 // Shows a bundled artwork from /art when present; otherwise resolves the image from
 // Wikipedia's page summary (the same source the pictures came from) and remembers it.
@@ -14,7 +14,7 @@ async function resolve(wp) {
   return url;
 }
 export default function ArtImg({ wp, alt = '', ...rest }) {
-  const local = data.timeline.artFiles[wp];
+  const local = withBase(data.timeline.artFiles[wp]);
   const [src, setSrc] = useState(local || cached(wp));
   const [failed, setFailed] = useState(false);
   useEffect(() => { if (local && !failed) return; let on = true; resolve(wp).then(u => on && setSrc(u)).catch(() => {}); return () => { on = false; }; }, [wp, local, failed]);

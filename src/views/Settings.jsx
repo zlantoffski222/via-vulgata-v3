@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { data, useSettings, settingsStore, exportProgress, importProgress, progressStore, notesStore, memoryStore, syncText, importSyncText, cloudPush, cloudPull } from '../store';
+import { data, useSettings, settingsStore, exportProgress, importProgress, progressStore, notesStore, memoryStore, syncText, importSyncText, cloudPush, cloudPull, withBase } from '../store';
 
 const Toggle = ({ on, set, label, help }) => <label className={'toggle' + (on ? ' on' : '')}><input type="checkbox" checked={on} onChange={e => set(e.target.checked)} /><span className="sw" /><span><b>{label}</b>{help && <small>{help}</small>}</span></label>;
 
@@ -27,7 +27,7 @@ export default function Settings() {
     const files = []; for (const b of data.books) { files.push(`/data/text/vul/${b.id}.json`, `/data/text/drc/${b.id}.json`, `/data/xref/${b.id}.json`, `/data/speakers/${b.id}.json`); for (const v of data.versions) if (v.id !== 'drc' && v.books.includes(b.id)) files.push(`/data/text/${v.id}/${b.id}.json`); }
     files.push('/data/latin.json'); for (const url of Object.values(data.timeline.artFiles)) if (url.startsWith('/')) files.push(url);
     let n = 0; setOff({ n, total: files.length });
-    for (let i = 0; i < files.length; i += 6) { await Promise.all(files.slice(i, i + 6).map(f => fetch(f).catch(() => {}))); n = Math.min(files.length, i + 6); setOff({ n, total: files.length }); }
+    for (let i = 0; i < files.length; i += 6) { await Promise.all(files.slice(i, i + 6).map(f => fetch(withBase(f)).catch(() => {}))); n = Math.min(files.length, i + 6); setOff({ n, total: files.length }); }
     setMsg(navigator.serviceWorker?.controller ? 'Everything is stored for offline reading.' : 'Files fetched. Offline storage needs the installed app (service worker) — open the site over https and reload once.');
   }
   return (

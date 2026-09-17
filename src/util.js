@@ -1,4 +1,4 @@
-import { data } from './store';
+import { data , withBase } from './store';
 
 export function fmtYear(y) {
   const a = Math.abs(Math.round(y));
@@ -10,7 +10,7 @@ export function refLabel(r) {
   return r.c1 === r.c2 ? `${name} ${r.c1}` : `${name} ${r.c1}–${r.c2}`;
 }
 export function eraFor(y) { return data.timeline.eras.find(e => y >= e.s && y < e.e) || data.timeline.eras[data.timeline.eras.length - 1]; }
-export function artUrl(wp) { return data.timeline.artFiles[wp]; }
+export function artUrl(wp) { return withBase(data.timeline.artFiles[wp]); }
 export function eventsForChapter(b, c) { return (data.eventsByChapter[b + ':' + c] || []).slice().sort((x, y) => x.y - y.y); }
 // verse where an event should be anchored inside a chapter (first verse-level ref in that chapter, else 1)
 export function anchorVerse(ev, b, c) {

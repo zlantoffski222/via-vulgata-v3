@@ -16,7 +16,9 @@ async function inflate(b64) {
   const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
   return JSON.parse(await new Response(stream).text());
 }
-export const getJson = p => EMBED && EMBED[p] ? Promise.resolve(EMBED[p]) : EMBEDZ && EMBEDZ[p] ? inflate(EMBEDZ[p]) : fetch(p).then(r => { if (!r.ok) throw new Error(p); return r.json(); });
+export const BASE = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+export const withBase = p => (p && p.startsWith('/') && BASE && !p.startsWith(BASE + '/')) ? BASE + p : p;
+export const getJson = p => EMBED && EMBED[p] ? Promise.resolve(EMBED[p]) : EMBEDZ && EMBEDZ[p] ? inflate(EMBEDZ[p]) : fetch(withBase(p)).then(r => { if (!r.ok) throw new Error(p); return r.json(); });
 let dataPromise = null;
 export function loadData() {
   if (!dataPromise) {
