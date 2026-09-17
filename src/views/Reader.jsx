@@ -230,7 +230,7 @@ export default function Reader() {
           <Toggle on={s.showArtInline !== false} set={v => settingsStore.set({ showArtInline: v })} label="Art and sources beside the verses" help="When hidden they stay in the Context panel" />
           <Toggle on={s.markDiffs !== false} set={v => settingsStore.set({ markDiffs: v })} label="Mark verses that read differently" help="When another English version is chosen" />
         </div>
-        {speechSupported && <div className="field"><label>Reading voice speed — {s.voiceRate || 1}×</label><input type="range" min="0.6" max="1.4" step="0.1" value={s.voiceRate || 1} onChange={e => settingsStore.set({ voiceRate: +e.target.value })} style={{ width: '100%', accentColor: 'var(--gold)' }} /></div>}
+        {speechSupported && <div className="field"><label>Reading voice speed — {s.voiceRate || 1}× · <Link to="/settings" onClick={() => setOpts(false)}>choose the voice</Link></label><input type="range" min="0.6" max="1.4" step="0.1" value={s.voiceRate || 1} onChange={e => settingsStore.set({ voiceRate: +e.target.value })} style={{ width: '100%', accentColor: 'var(--gold)' }} /></div>}
         <div className="field"><label>Print</label><div className="row"><button className="btn" onClick={() => { setOpts(false); setTimeout(() => window.print(), 250); }}>Print this chapter · save as PDF</button><span className="muted small">Text only, in the current language mode; the panels and pictures stay off the page.</span></div></div>
         <div className="help">Keyboard: ← → chapters · ↑ ↓ verses · space marks a verse · H opens verse tools · M marks the chapter · L listens · C context · / search · T theme</div>
       </Sheet>

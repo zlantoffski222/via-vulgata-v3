@@ -1006,3 +1006,7 @@ header.top.m { margin-bottom: 4px; }
 .cont-hero::after { background: linear-gradient(180deg, rgba(46,41,25,.12) 0%, rgba(46,41,25,.35) 45%, rgba(46,41,25,.9) 100%); }
 .cont-hero .in .eyebrow { text-shadow: 0 1px 3px rgba(0,0,0,.6); }
 .sky { opacity: .17; }
+/* gallery wall: livelier */
+.sky-tile img { transition: opacity 2.2s ease; }
+.sky-tile img.on { animation-duration: 26s; }
+@keyframes sky-drift { from { transform: translateY(calc(var(--dir, 1) * -10%)); } to { transform: translateY(calc(var(--dir, 1) * 3%)); } }

@@ -25,6 +25,7 @@ import Prayer, { Rosary, Stations, Mercy, Lectio } from './views/Prayer';
 import QuickSearch from './components/QuickSearch';
 import ListenBar from './components/ListenBar';
 import ArtSky from './components/ArtSky';
+import { setVoices, setStudio, setRate } from './speech';
 
 const I = {
   home: <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>,
@@ -49,6 +50,7 @@ export default function App() {
   useTheme();
   const [search, setSearch] = useState(false);
   useEffect(() => { document.documentElement.style.setProperty('--fs', s.fontSize + 'px'); }, [s.fontSize]);
+  useEffect(() => { setVoices({ en: s.voiceEn || null, la: s.voiceLa || null }); setStudio({ key: s.ttsKey || '', voice: s.ttsVoice || 'sage', on: !!s.studioVoice }); setRate(s.voiceRate || 1); }, [s.voiceEn, s.voiceLa, s.ttsKey, s.ttsVoice, s.studioVoice, s.voiceRate]);
   useEffect(() => { if (!loc.pathname.startsWith('/read')) window.scrollTo(0, 0); }, [loc.pathname]);
   useEffect(() => {
     const k = e => {

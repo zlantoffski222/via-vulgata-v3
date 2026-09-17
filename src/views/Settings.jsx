@@ -1,3 +1,4 @@
+import VoiceSettings from '../components/VoiceSettings';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { data, useSettings, settingsStore, exportProgress, importProgress, progressStore, notesStore, memoryStore, syncText, importSyncText, cloudPush, cloudPull, withBase } from '../store';
@@ -76,6 +77,8 @@ export default function Settings() {
           <Toggle on={s.dailyScope === 'all'} set={v => settingsStore.set({ dailyScope: v ? 'all' : 'nt' })} label="Daily five from the whole Bible" help="Off: five New Testament passages a day. On: Old Testament passages too" />
         </div>
       </div>
+
+      <VoiceSettings />
 
       <div className="card" style={{ marginTop: 16 }}>
         <div className="eyebrow">Ask Claude</div>

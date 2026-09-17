@@ -194,7 +194,7 @@ export function totalProgress(p, books) {
   return { read, total, pct: total ? read / total : 0 };
 }
 export function chaptersRead(p, books) { let n = 0; for (const b of books) for (let c = 1; c <= b.chapters.length; c++) if (chapterDone(p, b, c)) n++; return n; }
-export function exportProgress() { return JSON.stringify({ v: 2, progress: progressStore.get(), notes: notesStore.get(), memory: memoryStore.get(), settings: { ...settingsStore.get(), apiKey: undefined } }, null, 1); }
+export function exportProgress() { return JSON.stringify({ v: 2, progress: progressStore.get(), notes: notesStore.get(), memory: memoryStore.get(), settings: { ...settingsStore.get(), apiKey: undefined, ttsKey: undefined } }, null, 1); }
 export function importProgress(json, merge = false) {
   const o = JSON.parse(json);
   if (o.progress && o.progress.read) {

@@ -19,7 +19,7 @@ function Tile({ initial, pool, swapEvery, index }) {
   useEffect(() => {
     if (!swapEvery) return;
     // stagger tiles so only one picture changes at a time
-    const first = 8000 + swapEvery * (((index * 7) % 16) / 16);
+    const first = 2500 + swapEvery * (((index * 7) % 16) / 16);
     let t2;
     timer.current = setTimeout(function tick() {
       const back = 1 - frontRef.current; frontRef.current = back;
@@ -52,8 +52,8 @@ export default function ArtSky() {
   return (
     <div className={'sky' + (inReader ? ' quiet' : '') + (mobile ? ' m' : '')} aria-hidden="true">
       {columns.map((files, c) => (
-        <div key={c} className="sky-col" style={{ '--dur': `${150 + c * 37}s`, '--delay': `${-c * 41}s`, '--dir': c % 2 ? -1 : 1 }}>
-          {files.map((f, i) => <Tile key={c + '-' + i} initial={f} pool={PAINTINGS} swapEvery={reduce ? 0 : 120000} index={c * per + i} />)}
+        <div key={c} className="sky-col" style={{ '--dur': `${34 + c * 9}s`, '--delay': `${-c * 13}s`, '--dir': c % 2 ? -1 : 1 }}>
+          {files.map((f, i) => <Tile key={c + '-' + i} initial={f} pool={PAINTINGS} swapEvery={reduce ? 0 : 32000} index={c * per + i} />)}
         </div>
       ))}
       <div className="sky-veil" />
