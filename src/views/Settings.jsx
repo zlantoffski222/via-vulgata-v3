@@ -65,6 +65,7 @@ export default function Settings() {
           <input type="range" min="14" max="28" value={s.fontSize} onChange={e => settingsStore.set({ fontSize: +e.target.value })} style={{ width: '100%', accentColor: 'var(--gold)' }} />
         </div>
         <div className="togglelist">
+          <Toggle on={s.livingArt !== false} set={v => settingsStore.set({ livingArt: v })} label="The gallery wall" help="A slow, dimmed collage of the app's paintings drifting behind every page. Turn it off for a plain page or on an older phone" />
           <Toggle on={s.showSpeakers !== false} set={v => settingsStore.set({ showSpeakers: v })} label="Who is speaking" help="Colour the words of Jesus (red), God (gold), angels (blue) and named people — worked out from the quotation marks of the World English Bible, so treat it as a guide" />
           <Toggle on={!!s.showOriginal} set={v => settingsStore.set({ showOriginal: v })} label="Original Greek and Hebrew" help="Show the Greek New Testament (SBLGNT) or Hebrew Bible (Leningrad Codex) under each verse. Tap any word for its Strong's entry and every other place it appears" />
           <Toggle on={s.showXrefs !== false} set={v => settingsStore.set({ showXrefs: v })} label="Cross-references" help="⇄ marks after verses, with the passages that echo them" />

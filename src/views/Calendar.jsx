@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { data, loadText, useProgress, readSet } from '../store';
 import { liturgicalDay } from '../lectionary';
 import DailyFive from '../components/DailyFive';
@@ -26,7 +26,8 @@ export function ReadingsList({ day, compact = false }) {
 }
 
 export default function Calendar() {
-  const [date, setDate] = useState(() => new Date());
+  const [sp] = useSearchParams(); const want = sp.get('d');
+  const [date, setDate] = useState(() => { const m = want && want.match(/^(\d{4})-(\d{2})-(\d{2})$/); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(); });
   const day = useMemo(() => liturgicalDay(date), [date]);
   const today = new Date(); const isToday = date.toDateString() === today.toDateString();
   const shift = n => { const d = new Date(date); d.setDate(d.getDate() + n); setDate(d); };

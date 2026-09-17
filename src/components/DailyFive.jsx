@@ -4,7 +4,7 @@ import { data, dailyNotes, loadText, useSettings } from '../store';
 import { speak, speechSupported } from '../speech';
 
 // Five New Testament passages for today: the Douay text, the Latin beneath, and the note on tap.
-export default function DailyFive({ compact = false }) {
+export default function DailyFive({ compact = false, list = false }) {
   const s = useSettings(); const scope = s.dailyScope || 'nt';
   const [items, setItems] = useState(null);
   const [open, setOpen] = useState(null);
@@ -26,7 +26,7 @@ export default function DailyFive({ compact = false }) {
         <div>{!compact && <div className="eyebrow">Five for today</div>}<div className="muted small">{compact ? 'Five passages for ' + today + ' · tap one to learn more' : today + (scope === 'all' ? ' · from the whole Bible' : ' · from the New Testament') + ' · tap one to learn more'}</div></div>
         {speechSupported && items && <button className="btn sm" onClick={() => speak(items.map(x => ({ text: x.full, lang: 'en', label: `${data.byId[x.n.b].abbr} ${x.n.c}:${x.n.v1}` })), 'Five for today')}>▶ Listen</button>}
       </div>
-      <div className={'daily' + (compact ? ' compact' : '')}>
+      <div className={'daily' + (compact ? ' compact' : '') + (list ? ' list' : '')}>
         {(items || []).map(({ n, en }, i) => {
           const book = data.byId[n.b]; const isOpen = open === n.id;
           return (

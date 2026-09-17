@@ -24,6 +24,7 @@ import Quiz from './views/Quiz';
 import Prayer, { Rosary, Stations, Mercy, Lectio } from './views/Prayer';
 import QuickSearch from './components/QuickSearch';
 import ListenBar from './components/ListenBar';
+import ArtSky from './components/ArtSky';
 
 const I = {
   home: <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>,
@@ -61,7 +62,8 @@ export default function App() {
   if (!d) return <div className="loading">Opening the book…</div>;
   const inReader = loc.pathname.startsWith('/read/');
   const on = (paths) => paths.some(p => loc.pathname === p || loc.pathname.startsWith(p + '/') || loc.pathname.startsWith(p + '?'));
-  return (
+  return (<>
+    <ArtSky />
     <div className={'shell' + (mobile ? ' m' : '') + (mobile && inReader ? ' in-reader' : '')}>
       <nav className="nav" aria-label="Main">
         <div className="brand" title="Christ is King">✦</div>
@@ -117,5 +119,5 @@ export default function App() {
       <QuickSearch open={search} onClose={() => setSearch(false)} />
       <ListenBar />
     </div>
-  );
+  </>);
 }

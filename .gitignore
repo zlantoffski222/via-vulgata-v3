@@ -6,3 +6,4 @@ scripts/.cache
 raw/lxx/*
 !raw/lxx/eng-lxx2012_usfx.zip
 !raw/lxx/copr.htm
+raw/art-small/

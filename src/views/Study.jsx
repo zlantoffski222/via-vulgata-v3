@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { data, useMemory, useNotes, useProgress, useSettings, goalStatus } from '../store';
 import { liturgicalDay } from '../lectionary';
+import { Ways } from './Home';
 
 // Hub for everything beyond the reader: people, journeys, harmony, prophecy, calendar, notebook, memory deck.
 export default function Study() {
@@ -23,7 +24,9 @@ export default function Study() {
     <div className="page fade-in">
       <div className="eyebrow">Study</div>
       <h1 className="title">Ways into the book</h1>
-      <div className="study-grid">{items.map(([to, t, sub, d]) => <Link key={to} to={to} className="study"><div className="h">{t}</div><div className="sub">{sub}</div><div className="d">{d}</div></Link>)}</div>
+      <Ways />
+      <div className="section-h" style={{ marginTop: 18 }}><span className="eyebrow">Also</span></div>
+      <div className="study-grid">{items.filter(([to]) => ['/calendar', '/timeline'].includes(to)).map(([to, t, sub, d]) => <Link key={to} to={to} className="study"><div className="h">{t}</div><div className="sub">{sub}</div><div className="d">{d}</div></Link>)}</div>
     </div>
   );
 }

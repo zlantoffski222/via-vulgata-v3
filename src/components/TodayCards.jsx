@@ -10,10 +10,10 @@ export const LIT_COLOR = { green: '#2f6a4f', violet: '#5a3d7a', rose: '#c96b7a',
 const RANK = { solemnity: 'Solemnity', feast: 'Feast', memorial: 'Memorial', optional: 'Optional memorial', trad: 'Traditional calendar' };
 
 // The saint of the day, with portrait and a short life.
-export function SaintCard({ date = new Date(), compact = false }) {
+export function SaintCard({ date = new Date(), compact = false, tall = false }) {
   const s = saintFor(date); if (!s) return null;
   return (
-    <Link to={`/saints/${s.d}`} className={'saint-card' + (compact ? ' compact' : '')}>
+    <Link to={`/saints/${s.d}`} className={'saint-card' + (compact ? ' compact' : '') + (tall ? ' tall' : '')}>
       <div className="pic"><ArtImg wp={s.wp} alt="" loading="lazy" /></div>
       <div className="in">
         <div className="eyebrow">Saint of the day · {RANK[s.r] || ''}</div>
@@ -21,6 +21,7 @@ export function SaintCard({ date = new Date(), compact = false }) {
         <div className="t">{s.t}{s.y ? ` · † ${s.y}` : ''}</div>
         {!compact && <p className="b">{s.b}</p>}
         {compact && <p className="b clamp">{s.b}</p>}
+        {tall && <div className="more"><span className="btn sm">Read the life →</span><span className="muted small">and a saint for every other day</span></div>}
       </div>
     </Link>
   );
