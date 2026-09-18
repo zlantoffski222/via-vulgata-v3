@@ -56,9 +56,10 @@ export function PrayerToday({ date = new Date() }) {
   const day = liturgicalDay(date); const easterTide = day.season === 'Easter';
   return (
     <div className="pray-today">
+      <Link to="/prayer/hours/morning" className="pt"><div className="eyebrow">When you rise</div><div className="h">Morning Prayer</div><div className="muted small">The psalm of the day, a reading and the Benedictus</div></Link>
       <Link to={`/prayer/rosary`} className="pt"><div className="eyebrow">Today's Rosary</div><div className="h">{set.n}</div><div className="muted small">{set.m.map(m => m.n).join(' · ')}</div></Link>
       <Link to={`/prayer#${easterTide ? 'regina' : 'angelus'}`} className="pt"><div className="eyebrow">Morning, noon and evening</div><div className="h">{easterTide ? 'Regina Caeli' : 'The Angelus'}</div><div className="muted small">{easterTide ? 'In Eastertide the Regina Caeli replaces the Angelus' : 'The Annunciation in three verses and three Hail Marys'}</div></Link>
-      <Link to="/prayer/lectio" className="pt"><div className="eyebrow">Fifteen quiet minutes</div><div className="h">Lectio divina</div><div className="muted small">Read, reflect, pray, rest — with today's Gospel</div></Link>
+      <Link to="/prayer/hours/night" className="pt"><div className="eyebrow">Before sleep</div><div className="h">Night Prayer</div><div className="muted small">Examination, the night psalm, the Nunc dimittis and the Salve</div></Link>
     </div>
   );
 }

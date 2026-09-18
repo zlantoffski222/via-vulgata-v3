@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Sheet from './Sheet';
 import XrefList from './XrefList';
 import CompareVerse from './CompareVerse';
+import VerseCard from './VerseCard';
 import { data, useNotes, setHighlight, setNote, addCard, removeCard, useMemory, toggleVerse, useProgress, readSet, vkey } from '../store';
 import { speak } from '../speech';
 
@@ -29,6 +30,7 @@ export default function VerseSheet({ open, onClose, book, c, v, la, en, xrefs, i
         <button className={tab === 'xref' ? 'on' : ''} onClick={() => setTab('xref')}>See also{xrefs && xrefs.length ? ` (${xrefs.length})` : ''}</button>
         <button className={tab === 'cmp' ? 'on' : ''} onClick={() => setTab('cmp')}>Versions</button>
         <button className={tab === 'note' ? 'on' : ''} onClick={() => setTab('note')}>Note{notes.notes[key] ? ' ✎' : ''}</button>
+        <button className={tab === 'pic' ? 'on' : ''} onClick={() => setTab('pic')}>Picture</button>
       </div>
       {tab === 'act' && <div className="vs-actions">
         <button className={'act' + (isRead ? ' on' : '')} onClick={() => toggleVerse(book.id, c, v)}><b>{isRead ? '✓ Read' : 'Mark read'}</b><span>{isRead ? 'tap to unmark' : 'counts toward your journey'}</span></button>
@@ -38,9 +40,11 @@ export default function VerseSheet({ open, onClose, book, c, v, la, en, xrefs, i
         <button className="act" onClick={() => speak([{ text: en, lang: 'en', key: c + ':' + v }, { text: la, lang: 'la', key: c + ':' + v }], ref)}><b>Listen</b><span>English, then the Latin</span></button>
         <button className="act" onClick={copy}><b>Copy</b><span>both texts with the reference</span></button>
         <button className="act" onClick={share}><b>Share</b><span>send this verse to someone</span></button>
+        <button className="act" onClick={() => setTab('pic')}><b>Make a picture</b><span>the verse over its painting, to post or send</span></button>
         <Link className="act" to={`/read/${book.id}/${c}#v${v}`} onClick={onClose}><b>Link</b><span>#/read/{book.id}/{c}#v{v}</span></Link>
       </div>}
       {tab === 'xref' && <XrefList refs={xrefs} onGo={onClose} />}
+      {tab === 'pic' && <VerseCard book={book} c={c} v={v} en={en} la={la} />}
       {tab === 'cmp' && <CompareVerse book={book} c={c} v={v} la={la} drc={en} onClose={() => setTab('act')} />}
       {tab === 'note' && <div>
         <textarea value={noteText} onChange={e => setNoteText(e.target.value)} placeholder="Your note on this verse…" rows={5} style={{ width: '100%' }} />

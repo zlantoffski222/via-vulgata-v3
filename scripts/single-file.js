@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(dist, 'index.html'), 'utf8');
 const js = html.match(/<script type="module"[^>]*src="([^"]+)"/)[1]; const css = html.match(/<link rel="stylesheet"[^>]*href="([^"]+)"/)[1];
 const data = {}, zipped = {};
 const add = (key, file) => { zipped[key] = zlib.gzipSync(fs.readFileSync(file), { level: 9 }).toString('base64'); };
-for (const f of ['books.json', 'books_context.json', 'plan_chrono.json', 'notes_nt.json', 'notes_ot.json', 'versions.json', 'people.json', 'journeys.json', 'harmony.json', 'prophecy.json', 'lectionary.json', 'saints.json', 'prayers.json', 'story.json']) add('/data/' + f, path.join(pub, 'data', f));
+for (const f of ['books.json', 'books_context.json', 'plan_chrono.json', 'notes_nt.json', 'notes_ot.json', 'versions.json', 'people.json', 'journeys.json', 'harmony.json', 'prophecy.json', 'lectionary.json', 'saints.json', 'prayers.json', 'story.json', 'lists.json', 'hours.json', 'fathers.json', 'latin-course.json']) add('/data/' + f, path.join(pub, 'data', f));
 const tl = JSON.parse(fs.readFileSync(path.join(pub, 'data', 'timeline.json'), 'utf8'));
 const PREVIEW = !!process.env.PREVIEW; // a lighter build that fits the artifact size limit: fewer versions, smaller pictures
 const artDir = PREVIEW && fs.existsSync(path.join(root, 'raw', 'art-small')) ? path.join(root, 'raw', 'art-small') : null;

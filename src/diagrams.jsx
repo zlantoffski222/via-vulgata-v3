@@ -326,6 +326,153 @@ export const DIAGRAMS = [
       </svg>
     ),
   },
+  {
+    id: 'genealogy', n: 'The family tree of Jesus', sub: 'Matthew 1 · Luke 3 · from Adam to Joseph', era: 'the whole story',
+    intro: 'Matthew opens his Gospel with forty-two generations from Abraham to Joseph, in three sets of fourteen: the patriarchs, the kings, and the exiles. Luke runs the other way, from Joseph back to Adam, "who was of God" — seventy-seven names. The two lists differ after David (Matthew follows Solomon, Luke follows Nathan); the Fathers explained it by Joseph having a legal and a natural father. This is the trunk both share, with the four women Matthew was careful to name.',
+    refs: [['MAT', 1, 1, 17], ['LUK', 3, 23, 38], ['RUT', 4, 18, 22]],
+    chapters: { MAT: [1], LUK: [3], RUT: [4], GEN: [5, 11], '1CH': [1, 2, 3] },
+    parts: [
+      { id: 'adam', n: 'Adam to Noah', t: 'Luke alone goes back past Abraham: Adam, Seth, Enos, Cainan, Malaleel, Jared, Henoch, Mathusala, Lamech, Noe — the ten of Genesis 5. Jesus is son of Adam, so he belongs to every nation, not only Israel.', ref: ['GEN', 5, 1, 32] },
+      { id: 'shem', n: 'Shem to Abraham', t: 'The ten generations of Genesis 11: Sem, Arphaxad, Sale, Heber (from whom "Hebrew"), Phaleg, Reu, Sarug, Nachor, Thare, Abram.', ref: ['GEN', 11, 10, 26] },
+      { id: 'patriarchs', n: 'Abraham, Isaac, Jacob, Judah', t: 'Where Matthew begins: "the son of David, the son of Abraham". The promise narrows from Abraham to one son, Isaac; to one of twins, Jacob; to one of twelve, Judah — "the sceptre shall not depart".', ref: ['MAT', 1, 2, 2] },
+      { id: 'tamar', n: 'Tamar, Rahab, Ruth, Bathsheba', t: 'Four women, all with a shadow or a foreign origin: Tamar who tricked Judah; Rahab the harlot of Jericho; Ruth the Moabite; "the wife of Uriah". Matthew names them on purpose, before naming a fifth, Mary.', ref: ['MAT', 1, 3, 6] },
+      { id: 'david', n: 'Jesse and David', t: 'The shoot from the stump of Jesse. Both Gospels pass through David; Matthew\'s second fourteen are the kings of Judah, Luke\'s line goes through Nathan, another son of David.', ref: ['MAT', 1, 6, 6] },
+      { id: 'kings', n: 'The kings, Solomon to Jechonias', t: 'Matthew\'s middle fourteen: Solomon, Roboam, Abia, Asa, Josaphat, Joram, Ozias, Joatham, Achaz, Ezechias, Manasses, Amon, Josias, Jechonias — "and his brethren in the transmigration of Babylon". He silently drops three kings to keep the count.', ref: ['MAT', 1, 7, 11] },
+      { id: 'exile', n: 'After the exile', t: 'Salathiel and Zorobabel, who led the return and rebuilt the Temple — the last names both Gospels share — then a dozen obscure men no other book records, down to Jacob (Matthew) or Heli (Luke), the father of Joseph.', ref: ['MAT', 1, 12, 16] },
+      { id: 'joseph', n: 'Joseph, "the husband of Mary"', t: 'Matthew breaks the pattern: not "Joseph begot Jesus" but "Joseph the husband of Mary, of whom was born Jesus, who is called Christ". The line is legal, through adoption; the birth is from the Holy Spirit.', ref: ['MAT', 1, 16, 16] },
+    ],
+    svg: (a, p) => (
+      <svg viewBox="0 0 800 520" className="dg">
+        <path d="M400 50v420" stroke="var(--dg-gold)" strokeWidth="3" />
+        {[['adam', 60, 'Adam', 'Seth · Enos · … · Noe', 'Genesis 5'], ['shem', 130, 'Sem', 'Arphaxad · … · Thare', 'Genesis 11'], ['patriarchs', 200, 'Abraham', 'Isaac · Jacob · Judah', 'Matthew begins'], ['tamar', 270, 'Phares', 'Esron · Aram · Aminadab · Naasson · Salmon · Booz · Obed', 'Tamar · Rahab · Ruth'], ['david', 340, 'Jesse · David', '', 'Bathsheba'], ['kings', 410, 'Solomon', 'Roboam · … · Josias · Jechonias', 'the kings of Judah'], ['exile', 460, 'Salathiel · Zorobabel', '… Matthan · Jacob', 'after Babylon']].map(([id, y, n, sub, tag]) => (
+          <H key={id} id={id} active={a} pick={p}><circle cx="400" cy={y} r="9" fill="var(--dg-gold)" stroke="currentColor" strokeWidth="2" /><T x="420" y={y + 4} s={13} w={600} a="start">{n}</T><T x="420" y={y + 19} s={10} a="start" cls="muted">{sub}</T><T x="380" y={y + 4} s={10} a="end" fill="var(--dg-red)">{tag}</T></H>))}
+        <H id="joseph" active={a} pick={p}><rect x="250" y="482" width="300" height="30" rx="8" fill="var(--dg-gold-soft)" stroke="currentColor" strokeWidth="2" /><T x="400" y="502" s={13} w={600}>Joseph, the husband of Mary — Jesus</T></H>
+        <T x="400" y="30" s={14} w={600}>From Adam to Joseph — the trunk the two Gospels share</T>
+        <T x="120" y="60" s={10} cls="muted">Luke only, back to Adam</T><T x="120" y="200" s={10} cls="muted">Matthew: 14 generations</T><T x="120" y="340" s={10} cls="muted">14 generations</T><T x="120" y="460" s={10} cls="muted">14 generations</T>
+        <path d="M400 340q-90 30-90 130" fill="none" stroke="var(--dg-gold)" strokeWidth="1.5" strokeDasharray="4 3" /><T x="290" y="440" s={9} cls="muted">Luke: through Nathan</T>
+      </svg>
+    ),
+  },
+  {
+    id: 'apostles', n: 'The twelve apostles', sub: 'Matthew 10 · their symbols and their deaths', era: 'AD 30–100',
+    intro: 'Twelve men — fishermen, a tax collector, a zealot — chosen on a mountain after a night of prayer, for the twelve tribes. Every list in the Gospels keeps them in three groups of four, Peter first and Judas last. Tradition gave each a symbol, usually the instrument of his death, and the Church built its calendar around them.',
+    refs: [['MAT', 10, 1, 4], ['LUK', 6, 12, 16], ['ACT', 1, 12, 26]],
+    chapters: { MAT: [4, 10], MRK: [3], LUK: [6], JHN: [1, 21], ACT: [1, 12] },
+    parts: [
+      { id: 'peter', n: 'Peter — the keys', t: 'Simon, fisherman of Bethsaida, renamed the Rock. Denied him three times, forgiven three times. Crucified head-down in Rome under Nero; the basilica stands over his grave. Feast 29 June.', ref: ['MAT', 16, 18, 19] },
+      { id: 'andrew', n: 'Andrew — the X-shaped cross', t: 'Peter\'s brother, the first called, who brought Peter to Jesus. Preached in Greece; crucified at Patras on a saltire. Patron of Scotland. Feast 30 November.', ref: ['JHN', 1, 40, 42] },
+      { id: 'james', n: 'James the Greater — the scallop shell', t: 'Son of Zebedee, with John a "son of thunder"; at the Transfiguration and in Gethsemane. The first apostle martyred, by Herod Agrippa in 44. Compostela. Feast 25 July.', ref: ['ACT', 12, 1, 2] },
+      { id: 'john', n: 'John — the eagle, the chalice', t: '"The disciple whom Jesus loved", who leaned on his breast at supper and stood at the cross. The only one to die naturally, at Ephesus, very old. Gospel, three letters, the Apocalypse. Feast 27 December.', ref: ['JHN', 19, 26, 27] },
+      { id: 'philip', n: 'Philip — the loaves', t: 'Of Bethsaida. "Come and see." "Lord, show us the Father." Died at Hierapolis. Feast 3 May.', ref: ['JHN', 14, 8, 9] },
+      { id: 'bartholomew', n: 'Bartholomew — the flaying knife', t: 'Nathanael under the fig tree, "an Israelite in whom there is no guile". Preached in India and Armenia, where he was flayed. Feast 24 August.', ref: ['JHN', 1, 45, 51] },
+      { id: 'thomas', n: 'Thomas — the spear, the builder\'s square', t: 'The twin, who would not believe until he touched, and then said more than any of them: "My Lord and my God." Went to India; the Thomas Christians of Kerala are his. Feast 3 July.', ref: ['JHN', 20, 24, 29] },
+      { id: 'matthew', n: 'Matthew — the money bag, the angel', t: 'Levi the tax collector, called from his booth; gave a feast for sinners. The first Gospel bears his name. Feast 21 September.', ref: ['MAT', 9, 9, 13] },
+      { id: 'jamesless', n: 'James the Less — the club', t: 'Son of Alphaeus; identified by tradition with "the brother of the Lord", first bishop of Jerusalem, author of the letter, thrown from the Temple and clubbed in 62. Feast 3 May.', ref: ['ACT', 15, 13, 21] },
+      { id: 'jude', n: 'Jude Thaddaeus — the club, the ship', t: '"Not Iscariot"; asked at the Supper why Jesus would show himself to them and not the world. A short letter. Patron of hopeless causes. Feast 28 October.', ref: ['JHN', 14, 22, 23] },
+      { id: 'simon', n: 'Simon the Zealot — the saw', t: 'The Cananean, once of the party sworn to drive out Rome. Martyred in Persia with Jude, by tradition sawn in two. Feast 28 October.', ref: ['LUK', 6, 15, 15] },
+      { id: 'judas', n: 'Judas Iscariot — thirty pieces of silver', t: 'The treasurer, "a thief", who sold him with a kiss and hanged himself in the field of blood. Matthias, chosen by lot, took "his bishopric". Feast of Matthias 14 May.', ref: ['MAT', 27, 3, 10] },
+    ],
+    svg: (a, p) => (
+      <svg viewBox="0 0 800 560" className="dg">
+        <circle cx="400" cy="290" r="190" fill="none" stroke="var(--dg-gold)" strokeWidth="2" />
+        <circle cx="400" cy="290" r="60" fill="var(--dg-gold-soft)" stroke="currentColor" strokeWidth="2" /><T x="400" y="286" s={13} w={600}>the Lamb</T><T x="400" y="302" s={10} cls="muted">Rev 21:14</T>
+        {[['peter', 'Peter', '⚿'], ['andrew', 'Andrew', '✕'], ['james', 'James', '⌂'], ['john', 'John', '♆'], ['philip', 'Philip', '✚'], ['bartholomew', 'Bartholomew', '🗡'], ['thomas', 'Thomas', '⊿'], ['matthew', 'Matthew', '⚖'], ['jamesless', 'James the Less', '⚒'], ['jude', 'Jude', '⛵'], ['simon', 'Simon', '⚔'], ['judas', 'Judas', '✦']].map(([id, n, sym], i) => { const ang = -Math.PI / 2 + i * Math.PI / 6; const x = 400 + 190 * Math.cos(ang), y = 290 + 190 * Math.sin(ang); const lx = 400 + 245 * Math.cos(ang), ly = 290 + 245 * Math.sin(ang); return (
+          <H key={id} id={id} active={a} pick={p}><circle cx={x} cy={y} r="22" fill={id === 'judas' ? 'var(--dg-red)' : 'var(--dg-cream)'} fillOpacity={id === 'judas' ? .4 : 1} stroke="currentColor" strokeWidth="2" /><text x={x} y={y + 6} textAnchor="middle" fontSize="18" className="dl">{sym}</text><T x={lx} y={ly + 4} s={11} w={600}>{n}</T></H>); })}
+        <T x="400" y="30" s={14} w={600}>The Twelve — the wheel of the apostles, Peter at the top</T>
+        <T x="400" y="556" s={10} cls="muted">Their symbols are the instruments of their deaths, as the Church remembered them; tap each for the story</T>
+      </svg>
+    ),
+  },
+  {
+    id: 'churches', n: 'The seven churches of the Apocalypse', sub: 'Revelation 1–3 · a postman\'s route through Asia', era: 'c. AD 95',
+    intro: 'John, on Patmos, is told to write to seven churches — and they are listed in the order a courier would walk them from the coast: Ephesus first, then north to Smyrna and Pergamum, then inland and south through Thyatira, Sardis, Philadelphia and Laodicea, on the Roman road. Each letter knows the town: Laodicea\'s lukewarm water piped from hot springs, Pergamum\'s "throne of Satan" — the great altar of Zeus, Smyrna\'s "crown".',
+    refs: [['REV', 1, 9, 11], ['REV', 2, 1, 7], ['REV', 3, 14, 22]],
+    chapters: { REV: [1, 2, 3], ACT: [19, 20], EPH: [1], COL: [4] },
+    parts: [
+      { id: 'patmos', n: 'Patmos', t: 'A small rocky island sixty miles off the coast, a place of exile. "I, John, your brother… was in the island which is called Patmos, for the word of God."', ref: ['REV', 1, 9, 11] },
+      { id: 'ephesus', n: 'Ephesus', t: 'The capital, where Paul spent three years and John lived. Praised for endurance, blamed for having "left thy first charity". The lampstand would be moved — the city is a ruin today.', ref: ['REV', 2, 1, 7] },
+      { id: 'smyrna', n: 'Smyrna', t: 'The suffering church; no rebuke at all. "Be thou faithful unto death, and I will give thee the crown of life." Polycarp, John\'s disciple, was burned here in 155. Still a city: Izmir.', ref: ['REV', 2, 8, 11] },
+      { id: 'pergamum', n: 'Pergamum', t: '"Where the seat of Satan is" — the acropolis with its altar of Zeus and temple to the emperor. Antipas martyred; the white stone with a new name.', ref: ['REV', 2, 12, 17] },
+      { id: 'thyatira', n: 'Thyatira', t: 'A town of trade guilds — Lydia the seller of purple was from here — whose feasts meant idolatry. "Jezebel" tolerated; the morning star promised.', ref: ['REV', 2, 18, 29] },
+      { id: 'sardis', n: 'Sardis', t: 'Once Croesus\'s golden capital, twice captured by night because the watch slept: "thou hast the name of being alive, and thou art dead… be watchful." A few in white garments.', ref: ['REV', 3, 1, 6] },
+      { id: 'philadelphia', n: 'Philadelphia', t: 'The little church with "little strength" that kept the word: an open door no one can shut, and a pillar in the temple of God. No rebuke.', ref: ['REV', 3, 7, 13] },
+      { id: 'laodicea', n: 'Laodicea', t: 'Rich, self-sufficient, famous for its eye-salve and black wool, its water lukewarm by the time it arrived: "I would thou wert cold or hot." And the gentlest verse of all: "Behold, I stand at the gate and knock."', ref: ['REV', 3, 14, 22] },
+    ],
+    svg: (a, p) => (
+      <svg viewBox="0 0 800 520" className="dg">
+        <path d="M0 0h800v520H0z" fill="var(--dg-blue)" fillOpacity=".08" />
+        <path d="M250 20q-40 120 20 220q-60 80-40 180q-20 60-60 100H800V0z" fill="var(--dg-cream)" />
+        <T x="110" y="300" s={13} fill="var(--dg-blue)" cls="it">Aegean Sea</T>
+        <path d="M330 330L340 200L390 150L470 250L560 210L630 290L690 380" fill="none" stroke="var(--dg-red)" strokeWidth="2" strokeDasharray="6 4" />
+        {[['patmos', 150, 400, 'Patmos'], ['ephesus', 330, 330, 'Ephesus'], ['smyrna', 340, 200, 'Smyrna'], ['pergamum', 390, 150, 'Pergamum'], ['thyatira', 470, 250, 'Thyatira'], ['sardis', 560, 210, 'Sardis'], ['philadelphia', 630, 290, 'Philadelphia'], ['laodicea', 690, 380, 'Laodicea']].map(([id, x, y, n], i) => (
+          <H key={id} id={id} active={a} pick={p}>{id === 'patmos' ? <ellipse cx={x} cy={y} rx="14" ry="9" fill="var(--dg-cream)" stroke="currentColor" strokeWidth="2" /> : <circle cx={x} cy={y} r="7" fill="var(--dg-gold)" stroke="currentColor" strokeWidth="2" />}<T x={x + (id === 'patmos' ? 0 : 12)} y={y - 12} s={12} w={600} a={id === 'patmos' ? 'middle' : 'start'}>{i > 0 ? i + '. ' : ''}{n}</T></H>))}
+        <T x="400" y="30" s={14} w={600}>The seven churches — the courier's circuit from Ephesus</T>
+        <T x="400" y="500" s={10} cls="muted">The Roman road ran north up the coast and back down the river valleys; the letters follow it exactly</T>
+      </svg>
+    ),
+  },
+  {
+    id: 'exodus', n: 'The route of the Exodus', sub: 'Exodus 12 – Numbers 33 · from Goshen to the Jordan', era: 'c. 1446–1406 BC',
+    intro: 'Numbers 33 lists forty-two camps between Rameses and the plains of Moab. The exact line is argued — where the sea was crossed, which mountain is Sinai — but the shape is clear: out of the Delta, down the west of the Sinai peninsula to the mountain, north to Kadesh on the edge of the land, then thirty-eight years of wandering, and round Edom and Moab to the Jordan opposite Jericho.',
+    refs: [['EXO', 12, 37, 42], ['NUM', 33, 1, 49], ['DEU', 1, 2, 3]],
+    chapters: { EXO: [12, 13, 14, 15, 16, 17, 19], NUM: [10, 13, 14, 20, 21, 33], DEU: [1, 2] },
+    parts: [
+      { id: 'goshen', n: 'Goshen and Rameses', t: 'The land of the Delta where Jacob\'s family settled and where their descendants built Pharaoh\'s store-cities. The night of the Passover, they left from Rameses.', ref: ['EXO', 12, 37, 37] },
+      { id: 'sea', n: 'The Sea', t: 'Yam Suph, the "Sea of Reeds" — the lakes of the isthmus or the Gulf of Suez. Pharaoh\'s chariots behind, the water ahead, and Moses\' hand stretched out.', ref: ['EXO', 14, 21, 31] },
+      { id: 'marah', n: 'Marah and Elim', t: 'Three days without water, then bitter water made sweet with a tree; then twelve springs and seventy palms.', ref: ['EXO', 15, 22, 27] },
+      { id: 'sin', n: 'The wilderness of Sin', t: 'Where the manna began, and the quail, and the complaints: "would that we had died in Egypt by the fleshpots."', ref: ['EXO', 16, 1, 15] },
+      { id: 'rephidim', n: 'Rephidim', t: 'Water from the rock at Horeb, and the battle with Amalek won while Aaron and Hur held up Moses\' arms.', ref: ['EXO', 17, 1, 16] },
+      { id: 'sinai', n: 'Mount Sinai', t: 'Eleven months at the mountain: the Ten Words, the covenant, the calf, the Tabernacle. Traditionally Jebel Musa in the south of the peninsula, with St Catherine\'s monastery at its foot.', ref: ['EXO', 19, 1, 2] },
+      { id: 'kadesh', n: 'Kadesh-barnea', t: 'Eleven days from Sinai, on the edge of Canaan: the spies sent, the people\'s refusal, and the sentence of forty years. Miriam died and was buried here.', ref: ['NUM', 13, 26, 33] },
+      { id: 'wandering', n: 'The wandering', t: 'Thirty-eight years in the wilderness of Paran and Zin, camp to camp, until the generation that left Egypt had died, all but Joshua and Caleb.', ref: ['NUM', 14, 26, 35] },
+      { id: 'edom', n: 'Round Edom and Moab', t: 'Refused passage by Edom, Israel turns south to the Gulf of Aqaba and round; the bronze serpent on the way; Sihon and Og defeated east of the Jordan.', ref: ['NUM', 21, 4, 9] },
+      { id: 'moab', n: 'The plains of Moab', t: 'Across the Jordan from Jericho: Balaam, Deuteronomy, the death of Moses on Nebo, and the crossing under Joshua.', ref: ['NUM', 33, 48, 49] },
+    ],
+    svg: (a, p) => (
+      <svg viewBox="0 0 800 560" className="dg">
+        <path d="M0 0h800v560H0z" fill="var(--dg-cream)" />
+        <path d="M0 0h190q40 120 20 200l60 30q40 60 10 130q-20 60 20 120L0 560z" fill="var(--dg-blue)" fillOpacity=".25" /><T x="80" y="300" s={12} fill="var(--dg-blue)" cls="it">Mediterranean</T>
+        <path d="M330 560l40-160 40 160z" fill="var(--dg-blue)" fillOpacity=".4" /><T x="370" y="520" s={9} fill="var(--dg-blue)">Gulf of Suez</T>
+        <path d="M560 560l30-160 30 160z" fill="var(--dg-blue)" fillOpacity=".4" /><T x="590" y="520" s={9} fill="var(--dg-blue)">Gulf of Aqaba</T>
+        <path d="M640 40v80q-30 40-20 100" fill="none" stroke="var(--dg-blue)" strokeWidth="4" /><ellipse cx="640" cy="230" rx="14" ry="40" fill="var(--dg-blue)" fillOpacity=".5" /><T x="672" y="235" s={9} fill="var(--dg-blue)" a="start">Dead Sea</T>
+        <path d="M200 150L300 250L330 330L380 420L440 470L500 500L520 400L520 260L560 330L600 380L640 300L650 190" fill="none" stroke="var(--dg-red)" strokeWidth="3" strokeDasharray="7 5" />
+        {[['goshen', 200, 150, 'Goshen · Rameses'], ['sea', 300, 250, 'the Sea'], ['marah', 330, 330, 'Marah · Elim'], ['sin', 380, 420, 'Wilderness of Sin'], ['rephidim', 440, 470, 'Rephidim'], ['sinai', 500, 500, 'Mount Sinai'], ['kadesh', 520, 260, 'Kadesh-barnea'], ['wandering', 560, 330, 'Zin · Paran (38 years)'], ['edom', 600, 380, 'round Edom'], ['moab', 650, 190, 'plains of Moab']].map(([id, x, y, n]) => (
+          <H key={id} id={id} active={a} pick={p}>{id === 'sinai' ? <path d={`M${x - 16} ${y + 10}l16-28 16 28z`} fill="var(--dg-bronze)" stroke="currentColor" strokeWidth="2" /> : <circle cx={x} cy={y} r="6" fill="var(--dg-gold)" stroke="currentColor" strokeWidth="2" />}<T x={x + 10} y={y - 8} s={11} a="start">{n}</T></H>))}
+        <circle cx="660" cy="150" r="4" fill="currentColor" /><T x="672" y="154" s={10} a="start">Jericho</T>
+        <T x="400" y="30" s={14} w={600}>Out of Egypt — the traditional route</T>
+      </svg>
+    ),
+  },
+  {
+    id: 'cross', n: 'The Roman cross', sub: 'Matthew 27 · Mark 15 · Luke 23 · John 19', era: 'AD 30',
+    intro: 'Crucifixion was Rome\'s punishment for slaves and rebels: public, slow, and deliberately shameful. The Gospels give the details almost in passing — the scourging, the crossbeam carried, the title nailed above, the nails, the sponge on a reed, the legs broken, the spear — and every one of them matches what is known of the practice. The upright stood permanently at the place of execution; the condemned carried only the crossbeam.',
+    refs: [['JHN', 19, 17, 37], ['MRK', 15, 22, 39], ['PSA', 21, 15, 19]],
+    chapters: { MAT: [27], MRK: [15], LUK: [23], JHN: [19], PSA: [21], ISA: [53] },
+    parts: [
+      { id: 'titulus', n: 'The title', t: '"Jesus of Nazareth, King of the Jews" — in Hebrew, Greek and Latin, written by Pilate and refused to be changed: "What I have written, I have written." INRI is the Latin abbreviation.', ref: ['JHN', 19, 19, 22] },
+      { id: 'patibulum', n: 'The crossbeam (patibulum)', t: 'The condemned carried this, not the whole cross, to the place where the upright waited — which is why Simon of Cyrene could be pressed into carrying it when Jesus, scourged, could not.', ref: ['MRK', 15, 21, 21] },
+      { id: 'nails', n: 'The nails', t: 'Through the wrists, not the palms, which could not bear the weight; and through the feet, sideways through the heel by one example found in a Jerusalem tomb of the period. Thomas asked to see "the print of the nails".', ref: ['JHN', 20, 25, 25] },
+      { id: 'sedile', n: 'The seat and the footrest', t: 'A small peg or block to take some weight and prolong the death; breaking the legs (John 19:32) removed the support and ended it quickly. Jesus\' were not broken — "you shall not break a bone of him."', ref: ['JHN', 19, 31, 36] },
+      { id: 'side', n: 'The spear', t: 'A soldier\'s lance to the side to make sure of death: "and immediately there came out blood and water." The Fathers saw baptism and the Eucharist, the Church born from the side of the new Adam.', ref: ['JHN', 19, 34, 37] },
+      { id: 'thieves', n: 'The two thieves', t: 'One on either side, "and Jesus in the midst" — the good thief on his right by tradition, Dismas: "this day thou shalt be with me in paradise."', ref: ['LUK', 23, 39, 43] },
+      { id: 'foot', n: 'At the foot', t: 'The soldiers dicing for the seamless tunic; the women; his Mother and John — "Woman, behold thy son."', ref: ['JHN', 19, 23, 27] },
+    ],
+    svg: (a, p) => (
+      <svg viewBox="0 0 800 520" className="dg">
+        <path d="M0 470h800" stroke="currentColor" strokeWidth="2" /><path d="M120 470q280-40 560 0" fill="var(--dg-bronze)" fillOpacity=".3" />
+        <H id="thieves" active={a} pick={p}><path d="M150 470V200M100 230h100" stroke="var(--dg-bronze)" strokeWidth="10" strokeLinecap="round" /><path d="M650 470V200M600 230h100" stroke="var(--dg-bronze)" strokeWidth="10" strokeLinecap="round" /><T x="150" y="180" s={11}>the good thief</T><T x="650" y="180" s={11}>the other</T></H>
+        <path d="M400 470V90" stroke="var(--dg-bronze)" strokeWidth="14" strokeLinecap="round" />
+        <H id="patibulum" active={a} pick={p}><path d="M310 150h180" stroke="var(--dg-bronze)" strokeWidth="14" strokeLinecap="round" /><T x="540" y="145" s={11} a="start">crossbeam — carried to the place</T></H>
+        <H id="titulus" active={a} pick={p}><rect x="360" y="95" width="80" height="30" rx="3" fill="var(--dg-cream)" stroke="currentColor" strokeWidth="2" /><T x="400" y="115" s={13} w={600}>INRI</T><T x="460" y="112" s={11} a="start">the title, in three languages</T></H>
+        <H id="nails" active={a} pick={p}><circle cx="330" cy="150" r="5" fill="var(--dg-red)" /><circle cx="470" cy="150" r="5" fill="var(--dg-red)" /><circle cx="400" cy="380" r="5" fill="var(--dg-red)" /><T x="260" y="145" s={11} a="end">nails — through the wrists</T></H>
+        <H id="sedile" active={a} pick={p}><rect x="386" y="270" width="28" height="12" fill="var(--dg-bronze)" stroke="currentColor" /><rect x="380" y="370" width="40" height="10" fill="var(--dg-bronze)" stroke="currentColor" /><T x="360" y="280" s={11} a="end">the seat (sedile) — to prolong it</T><T x="440" y="392" s={11} a="start">footrest — the legs broken to end it</T></H>
+        <H id="side" active={a} pick={p}><path d="M560 330L430 230" stroke="currentColor" strokeWidth="3" /><path d="M425 226l-8-12 14 4z" fill="currentColor" /><T x="570" y="345" s={11} a="start">the spear — blood and water</T></H>
+        <H id="foot" active={a} pick={p}><circle cx="330" cy="440" r="8" fill="var(--dg-purple)" fillOpacity=".5" stroke="currentColor" /><circle cx="360" cy="445" r="8" fill="var(--dg-purple)" fillOpacity=".5" stroke="currentColor" /><circle cx="450" cy="445" r="8" fill="var(--dg-red)" fillOpacity=".4" stroke="currentColor" /><circle cx="480" cy="440" r="8" fill="var(--dg-red)" fillOpacity=".4" stroke="currentColor" /><T x="345" y="430" s={10}>Mary · John</T><T x="465" y="430" s={10}>soldiers dicing</T></H>
+        <T x="400" y="40" s={14} w={600}>Golgotha — what the Gospels describe</T>
+        <T x="400" y="505" s={10} cls="muted">The upright stayed at the place of execution; a man of average height hung with his feet a foot or two off the ground</T>
+      </svg>
+    ),
+  },
 ];
 
 export const byId = Object.fromEntries(DIAGRAMS.map(d => [d.id, d]));

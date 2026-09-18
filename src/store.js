@@ -88,6 +88,8 @@ export function useSide(kind, bookId, enabled = true) {
   return t;
 }
 let strongsPromise = null;
+let fathersPromise = null;
+export function loadFathers() { if (!fathersPromise) fathersPromise = getJson('/data/fathers.json').then(j => { const m = {}; for (const it of j.items) (m[it.b + ':' + it.c + ':' + it.v] ||= []).push(it); return m; }).catch(() => ({})); return fathersPromise; }
 export function loadStrongs() { if (!strongsPromise) strongsPromise = getJson('/data/strongs.json').catch(() => ({})); return strongsPromise; }
 let latinPromise = null;
 export function loadLatin() { if (!latinPromise) latinPromise = getJson('/data/latin.json').catch(() => ({})); return latinPromise; }

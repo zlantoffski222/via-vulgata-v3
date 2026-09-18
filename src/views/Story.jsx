@@ -15,7 +15,8 @@ export default function Story() {
   const statuses = stops.map(st => stopStatus(p, st));
   const doneStops = statuses.filter(x => x.complete).length;
   const uniq = new Map(); for (const st of stops) for (const ch of stopChapters(st)) uniq.set(ch.b + ':' + ch.c, ch); const chTotal = uniq.size, chDone = [...uniq.values()].filter(ch => chapterDone(p, data.byId[ch.b], ch.c)).length;
-  const nxt = nextStop(p); const cur = nxt || stops[stops.length - 1]; const curSt = stopStatus(p, cur);
+  const kids = !!s.greatStories; const shown = kids ? stops.filter(st => st.kid) : stops;
+  const nxt = (kids ? shown.find(st => !stopStatus(p, st).complete) : nextStop(p)) || null; const cur = nxt || shown[shown.length - 1]; const curSt = stopStatus(p, cur);
   const listRef = useRef(null);
   useEffect(() => { const el = document.getElementById('stop-' + cur.n); if (el && doneStops > 0) el.scrollIntoView({ block: 'center' }); }, []); // eslint-disable-line
   return (
@@ -35,14 +36,15 @@ export default function Story() {
             {s.plan !== 'story' && <button className="btn" onClick={() => settingsStore.set({ plan: 'story' })}>Make it my reading plan</button>}
             {s.plan === 'story' && <span className="chip gold">Your reading plan</span>}
           </div>
+          <div className="row" style={{ marginTop: 10 }}><div className="seg"><button className={!kids ? 'on' : ''} onClick={() => settingsStore.set({ greatStories: false })}>The whole path · {stops.length}</button><button className={kids ? 'on' : ''} onClick={() => settingsStore.set({ greatStories: true })}>The great stories · {stops.filter(st => st.kid).length}</button></div><span className="muted small">The great stories are the ones to tell a child, or to read first: Noah, Moses, David, Daniel, Jesus.</span></div>
         </div>
       </div>
 
       <div className="path" ref={listRef}>
-        {S.parts.map((part, pi) => (
+        {S.parts.map((part, pi) => shown.some(st => st.part === pi) && (
           <section key={pi} className="path-part">
             <div className="path-part-h"><div className="eyebrow">Part {pi + 1}</div><h2 className="h2">{part.t}</h2><div className="muted small">{part.sub}</div></div>
-            {stops.filter(st => st.part === pi).map(st => { const x = statuses[st.n - 1]; const isCur = st.n === cur.n; return (
+            {shown.filter(st => st.part === pi).map(st => { const x = statuses[st.n - 1]; const isCur = st.n === cur.n; return (
               <Link key={st.id} id={'stop-' + st.n} to={`/story/${st.n}`} className={'stop-row' + (x.complete ? ' done' : '') + (isCur ? ' cur' : '')}>
                 <div className="node"><span>{x.complete ? '✓' : st.n}</span></div>
                 <div className="pic"><ArtImg wp={st.art} alt="" loading="lazy" /></div>
@@ -66,7 +68,8 @@ export function Stop() {
   const S = data.story; const st = S.stops[+n - 1];
   useEffect(() => { window.scrollTo(0, 0); }, [n]);
   if (!st) return <div className="page"><p className="muted">No such stop.</p><Link to="/story" className="btn sm ghost">The story</Link></div>;
-  const x = stopStatus(p, st); const prev = S.stops[st.n - 2], next = S.stops[st.n];
+  const s = useSettings(); const kids = !!s.greatStories; const seq = kids ? S.stops.filter(z => z.kid) : S.stops; const si = seq.findIndex(z => z.n === st.n);
+  const x = stopStatus(p, st); const prev = si > 0 ? seq[si - 1] : (kids ? null : S.stops[st.n - 2]), next = si >= 0 ? seq[si + 1] : S.stops[st.n];
   const part = S.parts[st.part]; const ev = st.ev != null ? data.timeline.events.find(e => e.id === st.ev) : null; const dg = st.dg ? diagramsById[st.dg] : null;
   const chs = stopChapters(st); const first = x.next || chs[0];
   const readLink = ch => `/read/${ch.b}/${ch.c}?story=${st.n}`;

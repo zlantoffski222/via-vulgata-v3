@@ -1066,3 +1066,89 @@ header.top.m { margin-bottom: 4px; }
 [data-theme=night] .stop-row, [data-theme=night] .ev-link, [data-theme=night] .stop-ch, [data-theme=night] .stop-hero { border-color: var(--ring); }
 [data-theme=night] .stop-ch { background: var(--surface-1); }
 [data-theme=night] .path-part::before { background: linear-gradient(180deg, var(--gold), #3a3226); }
+/* verse cards */
+.vcard-pic { max-width: 420px; margin: 0 auto; }
+.vcard .seg button { padding: 5px 10px; font-size: 12px; }
+/* lists */
+.list-items { display: grid; gap: 8px; }
+.list-item { display: grid; grid-template-columns: 1fr; gap: 12px; align-items: start; background: var(--surface-1); border: 1px solid #e9deba; border-radius: 14px; padding: 12px 14px; cursor: pointer; transition: border-color .2s; }
+.list-item.has-art { grid-template-columns: 84px 1fr; }
+.list-items.numbered .list-item { grid-template-columns: 40px 1fr; }
+.list-items.numbered .list-item.has-art { grid-template-columns: 40px 84px 1fr; }
+.list-item:hover, .list-item.open { border-color: var(--gold-2); }
+.list-item .num { font-family: var(--serif); font-size: 26px; color: var(--gold); line-height: 1; padding-top: 2px; }
+.list-item .pic { width: 84px; height: 64px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #332e2a, #26221f); }
+.list-item .pic img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
+.list-item .h { font-family: var(--serif); font-size: 17px; font-weight: 600; line-height: 1.3; }
+.list-item .k { color: var(--ink-2); font-size: 13px; line-height: 1.45; margin-top: 3px; }
+[data-theme=night] .list-item { border-color: var(--ring); }
+@media (max-width: 560px) { .list-item.has-art { grid-template-columns: 64px 1fr; } .list-items.numbered .list-item.has-art { grid-template-columns: 30px 64px 1fr; } .list-item .pic { width: 64px; height: 52px; } }
+/* the hours */
+.hour { display: grid; gap: 12px; max-width: 860px; }
+.hour-step { background: var(--surface-1); border: 1px solid #e9deba; border-radius: 14px; padding: 12px 16px; }
+.hour-p { font-family: var(--serif); font-size: 16px; line-height: 1.6; margin: 6px 0; }
+.hour-gloria { font-family: var(--serif); font-style: italic; color: var(--ink-2); font-size: 14px; margin: 4px 0 2px; }
+.examen { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-family: var(--serif); font-size: 16px; line-height: 1.55; }
+[data-theme=night] .hour-step { border-color: var(--ring); }
+/* rosary player */
+.rp-grid { display: grid; grid-template-columns: 260px 1fr; gap: 18px; align-items: start; }
+@media (max-width: 760px) { .rp-grid { grid-template-columns: 1fr; } .rp-beads { max-width: 240px; margin: 0 auto; } }
+.beads { width: 100%; height: auto; display: block; }
+.rp-main { background: var(--surface-1); border: 1px solid var(--gold-2); border-radius: 18px; padding: 20px 22px; min-height: 260px; cursor: pointer; box-shadow: 0 14px 38px rgba(176,141,62,.14); }
+.rp-text .prayer-text p { font-size: 19px; line-height: 1.6; }
+.rp-mystery { font-family: var(--serif); font-size: 30px; font-weight: 600; margin: 6px 0 4px; line-height: 1.15; }
+/* gallery & viewer */
+.gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.gal-item { text-align: left; border: 1px solid #e9deba; background: var(--surface-1); border-radius: 14px; overflow: hidden; padding: 0; color: var(--ink-1); transition: border-color .2s, box-shadow .2s, transform .2s; }
+.gal-item:hover { border-color: var(--gold-2); box-shadow: 0 12px 28px rgba(176,141,62,.2); transform: translateY(-2px); }
+.gal-item .pic { aspect-ratio: 4/3; background: linear-gradient(135deg, #332e2a, #26221f); }
+.gal-item .pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gal-item .in { padding: 8px 12px 10px; }
+.gal-item .h { font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.2; }
+[data-theme=night] .gal-item { border-color: var(--ring); }
+.artview { position: fixed; inset: 0; z-index: 200; background: rgba(18,15,10,.94); display: grid; grid-template-rows: 1fr auto; }
+.artview .ib.x { position: absolute; top: 12px; right: 14px; z-index: 2; color: #fff; font-size: 28px; background: rgba(0,0,0,.4); border-radius: 50%; width: 40px; height: 40px; }
+.artview-pic { display: grid; place-items: center; padding: 20px; min-height: 0; }
+.artview-pic img { max-width: 100%; max-height: calc(100vh - 220px); object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,.6); border-radius: 4px; }
+.artview-cap { background: var(--surface-1); color: var(--ink-1); padding: 14px 22px 16px; max-height: 40vh; overflow: auto; border-top: 1px solid var(--ring); }
+.artview-cap .h { font-family: var(--serif); font-size: 20px; font-weight: 600; }
+.artview-cap .passage { margin: 8px 0; }
+.gal-grid { align-items: stretch; }
+.gal-item { display: flex; flex-direction: column; height: 100%; }
+.gallery .inp { display: block; width: 100%; }
+.daily-quiz .marks i { font-style: normal; font-weight: 700; margin-right: 2px; }
+.daily-quiz .marks i.ok { color: #2f6a4f; } .daily-quiz .marks i.no { color: #a8433a; }
+.months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; height: 60px; align-items: end; margin-top: 12px; }
+.months .mo { display: grid; grid-template-rows: 1fr auto; height: 100%; align-items: end; justify-items: center; gap: 2px; }
+.months .mo i { display: block; width: 100%; background: linear-gradient(180deg, var(--gold-2), var(--gold)); border-radius: 3px 3px 0 0; min-height: 2px; }
+.months .mo span { font-family: var(--sans); font-size: 9px; color: var(--ink-3); }
+/* the Fathers */
+.v .vmark.fa { color: #6b4d8f; background: #efe8f7; border-color: #d8c9ea; }
+.fathers { grid-column: 1 / -1; margin: 6px 0 10px 34px; border: 1px solid #d8c9ea; border-left: 3px solid #6b4d8f; background: #f7f3fb; border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: 0.82em; line-height: 1.55; cursor: default; }
+.fathers .fh { font-family: var(--sans); font-size: 12.5px; margin-bottom: 4px; }
+.fathers .fm { color: #6b4d8f; margin-right: 6px; }
+.fathers .fq { font-family: var(--serif); font-size: 15px; color: var(--ink-1); }
+[data-theme=night] .fathers { background: #241f2c; border-color: #3d3350; }
+[data-theme=night] .v .vmark.fa { background: #2c2438; border-color: #4a3d5e; color: #c9b6e6; }
+/* latin course & alphabets */
+.words { display: grid; gap: 10px; }
+.word .wh { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.lemma { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--ink-1); }
+.word .gloss { font-size: 15px; color: var(--ink-2); margin: 2px 0 8px; }
+.word .forms { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.word .forms .chip i { font-style: normal; color: var(--ink-3); font-size: 10px; margin-left: 4px; }
+.word .ex { border-left: 3px solid var(--gold-2); padding: 6px 12px; background: var(--gold-soft); border-radius: 0 10px 10px 0; }
+.word .ex .la { font-family: var(--serif); font-style: italic; font-size: 16px; }
+.word .ex .en { font-family: var(--serif); font-size: 14px; color: var(--ink-2); margin-top: 2px; }
+.latin mark { background: var(--gold-2); color: #2e2919; border-radius: 3px; padding: 0 2px; font-style: normal; }
+.way.done { border-color: var(--gold); background: var(--gold-soft); }
+.alpha-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.alpha { text-align: center; border: 1px solid #e9deba; background: var(--surface-1); border-radius: 14px; padding: 12px 8px; color: var(--ink-1); min-height: 150px; }
+.alpha .glyph { font-size: 34px; line-height: 1.1; margin-bottom: 4px; }
+.alpha .glyph.he, .alpha .ex.he { font-family: 'SBL Hebrew', 'Ezra SIL', 'Times New Roman', serif; direction: rtl; }
+.alpha .name { font-family: var(--sans); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); }
+.alpha .ex { font-size: 18px; margin-top: 6px; }
+.alpha.hidden { background: var(--gold-soft); }
+[data-theme=night] .alpha { border-color: var(--ring); }
+/* easier type */
+[data-font=sans] .v .t, [data-font=sans] .passage .pl, [data-font=sans] .stop-p, [data-font=sans] .hour-p, [data-font=sans] .prayer-text p, [data-font=sans] .daily .d .q { font-family: Verdana, 'Atkinson Hyperlegible', 'Trebuchet MS', var(--sans); letter-spacing: .02em; word-spacing: .08em; line-height: 1.75; font-size: 0.92em; }

@@ -17,6 +17,7 @@ export default defineConfig({
         theme_color: '#f8f5ec',
         background_color: '#f8f5ec',
         display: 'standalone',
+        shortcuts: [{ name: 'Today', url: BASE + '#/', description: 'The readings, the saint and the prayers of the day' }, { name: 'Continue reading', url: BASE + '#/journey', description: 'Pick up where you left off' }, { name: 'The story', url: BASE + '#/story', description: 'The Bible as one guided path' }, { name: 'Night Prayer', url: BASE + '#/prayer/hours/night', description: 'Compline' }],
         start_url: BASE, scope: BASE,
         icons: [
           { src: 'icon-192.png', sizes: '192x192', type: 'image/png' },

@@ -4,10 +4,14 @@ import { data, loadText, loadSide, makeStore } from '../store';
 import { useSyncExternalStore } from 'react';
 
 // Test yourself — every question is generated from the app's own data, so it never runs out.
-const quizStore = makeStore('vv.quiz', { best: {}, played: 0, right: 0 });
+const quizStore = makeStore('vv.quiz', { best: {}, played: 0, right: 0, daily: {} });
 const useQuiz = () => useSyncExternalStore(quizStore.subscribe, quizStore.get);
 
-const rnd = n => Math.floor(Math.random() * n);
+let RAND = Math.random; // swapped for a day-seeded generator in the daily quiz
+const rnd = n => Math.floor(RAND() * n);
+function seeded(n) { let x = n; return () => { x = (x * 1103515245 + 12345) % 2147483648; return x / 2147483648; }; }
+const dayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const daySeed = () => { const d = new Date(); return d.getFullYear() * 1000 + d.getMonth() * 40 + d.getDate() + 7; };
 const pick = arr => arr[rnd(arr.length)];
 const shuffle = a => { const x = [...a]; for (let i = x.length - 1; i > 0; i--) { const j = rnd(i + 1); [x[i], x[j]] = [x[j], x[i]]; } return x; };
 const sample = (arr, n, not = () => false) => { const out = []; const pool = shuffle(arr.filter(x => !not(x))); while (out.length < n && pool.length) out.push(pool.pop()); return out; };
@@ -69,16 +73,18 @@ const GEN = {
   },
 };
 
-async function makeQuestion(cat) { const k = cat === 'mix' ? pick(CATS)[0] : cat; const q = await GEN[k](); return q ? { ...q, cat: k } : makeQuestion(cat); }
+async function makeQuestion(cat) { const k = (cat === 'mix' || cat === 'daily') ? pick(CATS)[0] : cat; const q = await GEN[k](); return q ? { ...q, cat: k } : makeQuestion(cat); }
+async function makeDaily() { RAND = seeded(daySeed()); const qs = []; for (let i = 0; i < 5; i++) qs.push(await makeQuestion('daily')); RAND = Math.random; return qs; }
 
 export default function Quiz() {
   const st = useQuiz();
   const [cat, setCat] = useState('mix'); const [round, setRound] = useState(null); // { qs, i, score, chosen }
   const [q, setQ] = useState(null); const [chosen, setChosen] = useState(null); const [loading, setLoading] = useState(false);
-  const N = 10;
-  const start = async c => { setCat(c); setRound({ i: 0, score: 0, log: [] }); setChosen(null); setLoading(true); setQ(await makeQuestion(c)); setLoading(false); };
+  const N = cat === 'daily' ? 5 : 10;
+  const [dailyQs, setDailyQs] = useState(null);
+  const start = async c => { setCat(c); setRound({ i: 0, score: 0, log: [] }); setChosen(null); setLoading(true); if (c === 'daily') { const qs = await makeDaily(); setDailyQs(qs); setQ(qs[0]); } else setQ(await makeQuestion(c)); setLoading(false); };
   const answer = o => { if (chosen) return; setChosen(o); const ok = o === q.answer; setRound(r => ({ ...r, score: r.score + (ok ? 1 : 0), log: [...r.log, { ...q, ok, chosen: o }] })); quizStore.set(s => ({ played: s.played + 1, right: s.right + (ok ? 1 : 0) })); };
-  const next = async () => { if (round.i + 1 >= N) { const key = cat; quizStore.set(s => ({ best: { ...s.best, [key]: Math.max(s.best[key] || 0, round.score) } })); setRound(r => ({ ...r, i: N })); setQ(null); return; } setLoading(true); setChosen(null); setRound(r => ({ ...r, i: r.i + 1 })); setQ(await makeQuestion(cat)); setLoading(false); };
+  const next = async () => { if (round.i + 1 >= N) { const key = cat; quizStore.set(s => ({ best: { ...s.best, [key]: Math.max(s.best[key] || 0, round.score) }, daily: cat === 'daily' ? { ...s.daily, [dayKey()]: { score: round.score, marks: round.log.map(l => l.ok) } } : s.daily })); setRound(r => ({ ...r, i: N })); setQ(null); return; } setLoading(true); setChosen(null); const ni = round.i + 1; setRound(r => ({ ...r, i: ni })); setQ(cat === 'daily' ? dailyQs[ni] : await makeQuestion(cat)); setLoading(false); };
   useEffect(() => { const k = e => { if (!q || !chosen || e.key !== 'Enter') return; next(); }; window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); });
 
   if (!round) return (
@@ -86,6 +92,11 @@ export default function Quiz() {
       <div className="eyebrow">Test yourself</div>
       <h1 className="title">How well do you know the book?</h1>
       <p className="lede">Ten questions a round, drawn fresh each time from the text, the people, the chronicle and the prophecies. Every answer links to the passage, so a wrong guess is a place to go and read.{st.played ? ` You have answered ${st.played} questions and got ${Math.round(100 * st.right / st.played)}% right.` : ''}</p>
+      {(() => { const d = st.daily && st.daily[dayKey()]; return <div className="card daily-quiz" style={{ marginBottom: 14 }}>
+        <h2 className="ch">Today's quiz <span className="hint">— the same five questions for everyone, every day</span></h2>
+        {d ? <div className="row" style={{ alignItems: 'center', gap: 12 }}><div className="stat"><b>{d.score}/5</b><span className="marks">{d.marks.map((ok, i) => <i key={i} className={ok ? 'ok' : 'no'}>{ok ? '✓' : '✗'}</i>)}</span></div><button className="btn sm" onClick={async () => { const text = `Christ is King — daily quiz, ${new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}: ${d.score}/5 ${d.marks.map(ok => ok ? '✓' : '✗').join('')}\nhttps://christ-is-king-bible.github.io/#/quiz`; try { if (navigator.share) await navigator.share({ text }); else { await navigator.clipboard.writeText(text); alert('Copied — paste it anywhere.'); } } catch {} }}>Share your score</button><span className="muted small">Come back tomorrow for five more.</span></div>
+          : <div className="row"><button className="btn solid" onClick={() => start('daily')}>Play today's five</button><span className="muted small">Who said it, where is it, which came first — a shared score to compare with friends.</span></div>}
+      </div>; })()}
       <div className="study-grid">
         <button className="study" onClick={() => start('mix')}><div className="h">A bit of everything</div><div className="sub">{st.best.mix != null ? `best ${st.best.mix}/${N}` : 'mixed round'}</div><div className="d">All six kinds of question, shuffled.</div></button>
         {CATS.map(([id, n, d]) => <button key={id} className="study" onClick={() => start(id)}><div className="h">{n}</div><div className="sub">{st.best[id] != null ? `best ${st.best[id]}/${N}` : 'ten questions'}</div><div className="d">{d}</div></button>)}
@@ -96,7 +107,7 @@ export default function Quiz() {
     <div className="page fade-in">
       <div className="eyebrow">Round over</div>
       <h1 className="title">{round.score} out of {N}</h1>
-      <p className="lede">{round.score === N ? 'Every one. Well read.' : round.score >= 7 ? 'A good round — the ones you missed are below, with their passages.' : 'The missed ones are below; each links to the place in the text.'}</p>
+      <p className="lede">{cat === 'daily' ? 'That was today\'s five — share the score from the quiz page, and come back tomorrow. ' : ''}{round.score === N ? 'Every one. Well read.' : round.score >= 7 ? 'A good round — the ones you missed are below, with their passages.' : 'The missed ones are below; each links to the place in the text.'}</p>
       <div className="row" style={{ marginBottom: 14 }}><button className="btn solid" onClick={() => start(cat)}>Another round</button><button className="btn" onClick={() => setRound(null)}>Choose a kind</button></div>
       <div className="quiz-log">{round.log.map((l, i) => <Link key={i} to={l.link} className={'ql ' + (l.ok ? 'ok' : 'no')}><span className="mark">{l.ok ? '✓' : '✗'}</span><span><b>{l.q}</b> {l.text ? <i>“{trim(l.text, 90)}”</i> : ''}<div className="muted small">{l.ok ? l.answer : `You said ${l.chosen} — it was ${l.answer}`} · {l.explain}</div></span></Link>)}</div>
     </div>

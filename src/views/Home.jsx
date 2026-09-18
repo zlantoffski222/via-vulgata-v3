@@ -94,7 +94,8 @@ function ContinueCard({ j }) {
         </div>
         <div className="bar"><i style={{ width: `${tot.pct * 100}%` }} /></div>
         <Streak cells={cells} />
-        <div className="muted small" style={{ marginTop: 8 }}>{goal ? `${goal.perDay > 0 ? Math.ceil(goal.perDay * 10) / 10 + ' chapters a day' : 'Done'} to finish ${goal.label} by ${new Date(s.goal.date + 'T12:00').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })} · ${goal.ahead >= 0 ? Math.round(goal.ahead) + ' ahead' : Math.round(-goal.ahead) + ' behind'}` : <Link to="/journey#goal">Set a finishing date →</Link>}</div>
+        <div className="muted small" style={{ marginTop: 8 }}><Link to="/review">Your year in review →</Link></div>
+        <div className="muted small">{goal ? `${goal.perDay > 0 ? Math.ceil(goal.perDay * 10) / 10 + ' chapters a day' : 'Done'} to finish ${goal.label} by ${new Date(s.goal.date + 'T12:00').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })} · ${goal.ahead >= 0 ? Math.round(goal.ahead) + ' ahead' : Math.round(-goal.ahead) + ' behind'}` : <Link to="/journey#goal">Set a finishing date →</Link>}</div>
       </div>
     </div>
   );
@@ -108,10 +109,13 @@ const WAYS = [
   ['/harmony', 'Harmony of the Gospels', () => `${data.harmony?.sections.reduce((a, s) => a + s.items.length, 0) || 0} scenes`, 'The life of Christ scene by scene, four Gospels side by side', 'M12 3v18M6 8h12M8 21h8'],
   ['/prophecy', 'Prophecy & fulfilment', () => `${data.prophecy.length} pairs`, 'The promise beside the passage that claims it, Hebrew beside Latin', 'M4 12h6l2-5 3 10 2-5h3M4 19h16'],
   ['/diagrams', 'Diagrams', () => `${DIAGRAMS.length} drawings`, 'The Tabernacle, the Temples, the Ark, Jerusalem, the tribes, the kingdoms', 'M4 4h16v16H4zM4 12h16M12 4v16'],
+  ['/gallery', 'The gallery', () => `${data.timeline.events.filter(e => e.art && data.timeline.artFiles[e.art.wp]).length} paintings`, 'Every painting in the app, large, with the passage it illustrates', 'M4 5h16v12H4zM4 17l5-6 4 4 3-3 4 5M15 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2'],
   ['/prayer', 'Prayer', 'Latin & English', 'The Rosary, the Stations, the Chaplet, the Creeds, lectio divina', 'M12 2v6M9 5h6M8 22c0-6 1-9 4-14 3 5 4 8 4 14z'],
   ['/saints', 'Saints', '366 lives', 'A saint for every day of the year, with the Scripture of the feast', 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z'],
+  ['/lists', 'By heart', 'parables, miracles, lists', 'The parables and miracles, the Commandments, Beatitudes, I AM sayings, the apostles', 'M4 6h16M4 12h16M4 18h10'],
   ['/quiz', 'Test yourself', 'six kinds of question', 'Who said it, where is it, who is this, what comes next', 'M9 9a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4M12 18h.01'],
   ['/journey', 'Reading plan', 'three orders', 'Canonical, story order, or the life of Christ — with a finishing date', 'M5 20c0-6 4-6 7-9s3-6 0-8M12 3l3 1-3 1M5 20l2 1-2 1'],
+  ['/latin', 'Learn Latin', '240 words · 67%', 'The Vulgate\'s most frequent words in twenty lessons, drilled with real verses; plus the Greek and Hebrew alphabets', 'M4 20h16M6 20l6-16 6 16M8.5 14h7'],
   ['/notebook', 'Notebook', s => s.nb ? `${s.nb} marks` : 'yours to fill', 'Every highlight and note you make, by book, exportable', 'M5 4h10l4 4v12H5zM15 4v4h4M8 13h8M8 17h5'],
   ['/memory', 'Memory verses', s => s.due ? `${s.due} due` : s.cards ? `${s.cards} cards` : 'learn by heart', 'Verses by heart with spaced repetition, in English or Latin', 'M12 21s-7-4.6-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.4-9 9-9 9z'],
 ];

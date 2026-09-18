@@ -13,7 +13,7 @@ export default function Passage({ r, latin = false, max = 0, className = '' }) {
     let on = true;
     if (!bk) return;
     loadText('drc', b).then(t => on && setEn((t[c - 1] || []).slice(v1 - 1, v2)));
-    if (latin) loadText('la', b).then(t => on && setLa((t[c - 1] || []).slice(v1 - 1, v2)));
+    if (latin) loadText('vul', b).then(t => on && setLa((t[c - 1] || []).slice(v1 - 1, v2)));
     return () => { on = false; };
   }, [b, c, v1, v2, latin]);
   if (!bk) return null;

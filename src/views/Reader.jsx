@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { data, useText, useProgress, useSettings, settingsStore, readSet, toggleVerse, setChapter, setLast, nextChapter, prevChapter, chapterDone, useVersionText, versionHasBook, useSide, useNotes, vkey, stopChapters } from '../store';
+import { data, useText, useProgress, useSettings, settingsStore, readSet, toggleVerse, setChapter, setLast, nextChapter, prevChapter, chapterDone, useVersionText, versionHasBook, useSide, useNotes, vkey, stopChapters, loadFathers } from '../store';
 import CompareVerse from '../components/CompareVerse';
 import { eventsForChapter, anchorVerse, isPrimaryChapter, eraFor } from '../util';
 import ContextPanel from '../components/ContextPanel';
@@ -11,6 +11,7 @@ import { LatinText, LatinPopover } from '../components/LatinText';
 import { OrigText, StrongsPopover } from '../components/OrigText';
 import MiniMap from '../components/MiniMap';
 import Sheet from '../components/Sheet';
+import ArtViewer from '../components/ArtViewer';
 import { speak, subscribeSpeech, speechSupported, stop as stopSpeech } from '../speech';
 import { useIsMobile, longPress } from '../hooks';
 
@@ -46,7 +47,7 @@ export default function Reader() {
   const [sheet, setSheet] = useState(null); // verse number
   const [word, setWord] = useState(null); // { w, el }
   const [opts, setOpts] = useState(false);
-  const [where, setWhere] = useState(false);
+  const [where, setWhere] = useState(false); const [viewArt, setViewArt] = useState(false);
   const [reading, setReading] = useState(null); // key of verse being read aloud
   const flags = useMemo(() => { const f = {}; if (vt && vt.d) { for (const k of vt.d) f[k] = 'd'; for (const k of vt.m) f[k] = 'm'; for (const k of vt.j) f[k] = 'j'; } return f; }, [vt]);
   const [tab, setTab] = useState('context');
@@ -56,6 +57,8 @@ export default function Reader() {
   const plateEv = evs.find(e => e.art && isPrimaryChapter(e, id, c)) || null;
   const glosses = useMemo(() => { const m = {}; for (const n of (data.notesByChapter[id + ':' + c] || [])) (m[n.v1] ||= []).push(n); return m; }, [id, c]);
   const [openGloss, setOpenGloss] = useState(null);
+  const [fathers, setFathers] = useState(null); const [openF, setOpenF] = useState(null);
+  useEffect(() => { if (!s.showFathers) return; let on = true; loadFathers().then(m => on && setFathers(m)); return () => { on = false; }; }, [s.showFathers]);
   const locKeys = useMemo(() => [...new Set(evs.flatMap(e => e.loc))].filter(k => data.timeline.locs[k]), [evs]);
 
   useEffect(() => { if (book) setLast(id, c); }, [id, c, book]);
@@ -143,10 +146,11 @@ export default function Reader() {
         </div>
 
         <article className="folio" key={id + c}>
-          {plateEv && <Link to={`/event/${plateEv.id}`} className="plate" style={{ display: 'block' }}>
+          {plateEv && <div className="plate" style={{ display: 'block', cursor: 'zoom-in' }} onClick={() => setViewArt(true)} role="button" tabIndex={0}>
             <ArtImg wp={plateEv.art.wp} alt={plateEv.art.t} />
-            <div className="cap"><b>{plateEv.art.t}</b><span>{plateEv.art.by}{plateEv.art.by ? ' · ' : ''}{plateEv.ttl}</span></div>
-          </Link>}
+            <div className="cap"><b>{plateEv.art.t}</b><span>{plateEv.art.by}{plateEv.art.by ? ' · ' : ''}{plateEv.ttl} · tap to see it large</span></div>
+          </div>}
+          {viewArt && plateEv && <ArtViewer ev={plateEv} onClose={() => setViewArt(false)} />}
           {stop && <Link to={`/story/${stop.n}`} className="story-bar"><span className="eyebrow">The story · stop {stop.n} of {data.story.stops.length}</span><b>{stop.t}</b><span className="muted small">{stopIdx >= 0 ? `chapter ${stopIdx + 1} of ${stopChs.length}` : ''}</span></Link>}
           <header className="folio-head">
             <div className="bk">{book.latin}</div>
@@ -180,10 +184,12 @@ export default function Reader() {
                         {oref && !fl && (v === 1 || !oref.endsWith(':' + v)) && <span className="vmark" title={'Numbered ' + oref + ' in that version'} onClick={ev => { ev.stopPropagation(); setCmp(cmp === v ? null : v); }}>{oref}</span>}
                         {xr && s.showXrefs !== false && <span className="vmark xr" title="See also — cross-references" onClick={ev => { ev.stopPropagation(); setSheet({ v, tab: 'xref' }); }}>⇄ {xr.length}</span>}
                         {note && <span className="vmark nt" title={note.t} onClick={ev => { ev.stopPropagation(); setSheet({ v, tab: 'note' }); }}>✎</span>}
+                        {s.showFathers && fathers && fathers[id + ':' + c + ':' + v] && <span className="vmark fa" title="A word from the Fathers" onClick={ev => { ev.stopPropagation(); setOpenF(openF === v ? null : v); }}>✝ {fathers[id + ':' + c + ':' + v][0].who}</span>}
                       </span>}
                       {mode === 'la' && (xr && s.showXrefs !== false || note) && <span className="t la-marks">{xr && s.showXrefs !== false && <span className="vmark xr" onClick={ev => { ev.stopPropagation(); setSheet({ v, tab: 'xref' }); }}>⇄ {xr.length}</span>}{note && <span className="vmark nt" onClick={ev => { ev.stopPropagation(); setSheet({ v, tab: 'note' }); }}>✎</span>}</span>}
                     </div>
                     {cmp === v && <CompareVerse book={book} c={c} v={v} la={L} drc={D} onClose={() => setCmp(null)} />}
+                    {openF === v && fathers && (fathers[id + ':' + c + ':' + v] || []).map((f, fi) => <div key={fi} className="fathers" onClick={ev => ev.stopPropagation()}><div className="fh"><span className="fm">✝</span><b>{f.who}</b><span className="muted small"> · {f.work}</span></div><div className="fq">“{f.q}”</div><div className="muted small" style={{ marginTop: 4 }}>Commentary, not Scripture — one voice from the early Church.</div></div>)}
                     {s.showGlosses !== false && glosses[v] && glosses[v].map(n => (
                       <div key={'g' + n.id} id={'note' + n.id} className={'gloss' + (openGloss === n.id ? ' open' : '')} onClick={ev => { ev.stopPropagation(); setOpenGloss(openGloss === n.id ? null : n.id); }} role="button" tabIndex={0} onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setOpenGloss(openGloss === n.id ? null : n.id); } }}>
                         <div className="gh"><span className="gm">✎</span><span className="gt">{n.t}</span><span className="gr">{book.abbr} {n.c}:{n.v1}{n.v2 !== n.v1 ? '–' + n.v2 : ''}</span></div>
@@ -232,6 +238,7 @@ export default function Reader() {
           <Toggle on={s.showSpeakers !== false} set={v => settingsStore.set({ showSpeakers: v })} label="Who is speaking" help="Colour the words of Jesus, of God, of angels and of named people" />
           {origHas && <Toggle on={!!s.showOriginal} set={v => settingsStore.set({ showOriginal: v })} label={origVer === 'grc' ? 'Greek original' : 'Hebrew original'} help={origVer === 'grc' ? 'The SBL Greek New Testament under each verse — tap a word for Strong\'s' : 'The Leningrad Codex Hebrew under each verse — tap a word for Strong\'s'} />}
           <Toggle on={s.showXrefs !== false} set={v => settingsStore.set({ showXrefs: v })} label="Cross-references" help="⇄ marks with the passages that echo each verse" />
+          <Toggle on={!!s.showFathers} set={v => settingsStore.set({ showFathers: v })} label="A word from the Fathers" help="✝ marks on verses Augustine, Jerome, Chrysostom or another Father wrote about — tap to read a line of theirs. Off by default: the text speaks first" />
           <Toggle on={s.latinHelp !== false} set={v => settingsStore.set({ latinHelp: v })} label="Latin word help" help="Tap any Latin word for its dictionary form and meaning" />
           <Toggle on={s.showGlosses !== false} set={v => settingsStore.set({ showGlosses: v })} label="Passage notes" help="Short explanations under significant verses" />
           <Toggle on={s.showArtInline !== false} set={v => settingsStore.set({ showArtInline: v })} label="Art and sources beside the verses" help="When hidden they stay in the Context panel" />

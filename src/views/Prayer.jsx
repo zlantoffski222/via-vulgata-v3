@@ -30,6 +30,10 @@ export default function Prayer() {
   const today = new Date(); const set = P.rosary.sets.find(x => x.id === P.rosary.days[String(today.getDay())]);
   const easterTide = liturgicalDay(today).season === 'Easter';
   const ways = [
+    ['/prayer/hours/morning', 'Morning Prayer', 'Lauds, simply', 'The psalm of the day, a short reading, the Benedictus, a prayer.'],
+    ['/prayer/hours/night', 'Night Prayer', 'Compline, simply', 'An examination, the night psalm, the Nunc dimittis and the antiphon to Our Lady.'],
+    ['/prayer/examen', 'Examination of conscience', 'for the evening', 'By the commandments, ending with the Act of Contrition.'],
+    ['/psalms', 'The Psalms', 'the Psalter', 'The psalm of the day and the families of psalms — penitential, gradual, Hallel.'],
     ['/prayer/rosary', 'The Rosary', `Today: ${set.n}`, 'Twenty mysteries, each with the Gospel passage it meditates on.'],
     ['/prayer/stations', 'The Way of the Cross', 'fourteen stations', 'From Pilate\'s court to the tomb, each station with its Scripture.'],
     ['/prayer/mercy', 'Divine Mercy Chaplet', 'the three o\'clock hour', 'Prayed on Rosary beads, with John 19 and Luke 23.'],
@@ -84,6 +88,7 @@ export function Rosary() {
         <LangSeg />
       </div>
       <p className="lede">{P.rosary.intro}</p>
+      <div className="row" style={{ marginBottom: 12 }}><Link className="btn solid" to={`/prayer/rosary/pray?set=${setId}`}>Pray it, led — beads, prayers and the Gospel, one at a time</Link></div>
       <div className="ros-open">
         <details><summary>The opening prayers — Sign of the Cross, Creed, Our Father, three Hail Marys, Glory Be</summary>
           {['signum', 'credo-ap', 'pater', 'ave', 'gloria'].map(id => { const p = find(id); return p && <div key={id} className="ros-p"><div className="eyebrow">{p.n}</div><PrayerText p={p} /></div>; })}
